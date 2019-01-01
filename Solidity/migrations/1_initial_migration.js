@@ -1,7 +1,7 @@
 var Migrations = artifacts.require("./Migrations.sol");
-var nofilter = artifacts.require ("./NoFilter.sol");
+var TronAiNeuralNetwork = artifacts.require ("./TronAiNeuralNetwork.sol");
 
 module.exports = function(deployer) {
   deployer.deploy(Migrations);
-  deployer.deploy(nofilter);
+  deployer.deploy(TronAiNeuralNetwork);
 };
