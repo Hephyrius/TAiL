@@ -1,0 +1,1 @@
+docker run -it -p 9090:9090 --rm --name tron trontools/quickstart
