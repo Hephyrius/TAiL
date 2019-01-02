@@ -19,35 +19,88 @@ import math
 class FeedForwardNeuralNetwork():
     
     LayerSizes = []
-    NeuronLayers = []
+    #NeuronLayers = []
     NeuronBiases = []
     NeuronConnectonsWeights = []
     NeuronActivationFunctions = []
-    
+    TotalNeurons = 0
     NetworkFitness = 0
     
     #initialise the network
     def __init__ (self, _LayerSizes):
         
-        print("Init")
+        print("Init Variables")
+        self.LayerSizes = []
+        self.NeuronLayers = []
+        self.NeuronBiases = []
+        self.NeuronConnectons = []
+        self.TotalNeurons = 0
+        self.NetworkFitness = 0
         
+        print("Setting Up Networks")
         self.CreateNetwork(_LayerSizes)
         
-    
     #set up lists within the network
     def CreateNetwork(self, _LayerSizes):
         
+        total = 0
+        
         for i in _LayerSizes:
             
-            Layer = []
+            self.LayerSizes.append(i)
+            total += i
+        
+        self.TotalNeurons = total
+        
+        #add biases to the bias list
+        for i in range(total):
+            self.NeuronBiases.append(0)
             
-            for j in range(i):
+        counter = self.LayerSizes[0]
+        layerstart = 0
+        #add connections
+        for i in range(1, len(self.LayerSizes)):
+            
+            PreviousLayer = self.LayerSizes[i - 1]
+            CurrentLayer = self.LayerSizes[i]
+            
+            for j in range(CurrentLayer):
+                for k in range(PreviousLayer):
+                    
+                    PrevLayerNeuron = layerstart + k
+                    CurrentLayerNeuron = counter
+                    Weight = 0
+                    Activation = 0
+                    Connection = [PrevLayerNeuron, CurrentLayerNeuron, Weight, Activation]
+                    print(Connection)
+                    self.NeuronConnectonsWeights.append(Connection)
+                    
+                counter += 1
+                    
                 
-                Layer.append(0)
-            
-            self.Layers.append(Layer)
-        self.ConnectLayers()
-    
+            layerstart += PreviousLayer
+                    
+        
+FFN = FeedForwardNeuralNetwork([2,1,1])
 
 
-FFN = FeedForwardNeuralNetwork([4,5,2])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
