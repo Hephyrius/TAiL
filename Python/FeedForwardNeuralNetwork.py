@@ -27,14 +27,14 @@ class FeedForwardNeuralNetwork():
     #initialise the network
     def __init__ (self, _LayerSizes):
         
-        print("Init Variables")
+        #print("Init Variables")
         self.LayerSizes = []
         self.NeuronBiases = []
         self.NeuronConnectons = []
         self.TotalNeurons = 0
         self.NetworkFitness = 0
         
-        print("Setting Up Networks")
+        #print("Setting Up Networks")
         self.CreateNetwork(_LayerSizes)
         
     #set up lists within the network
@@ -69,7 +69,7 @@ class FeedForwardNeuralNetwork():
                     Weight = 1
                     Activation = 0
                     Connection = [PrevLayerNeuron, CurrentLayerNeuron, Weight, Activation]
-                    print(Connection)
+                    #print(Connection)
                     self.NeuronConnectonsWeights.append(Connection)
                     
                 counter += 1
@@ -139,10 +139,10 @@ class FeedForwardNeuralNetwork():
 
         
         return data
-
-FFN = FeedForwardNeuralNetwork([2,8,10])
-FFN.Predict([0,1])
-FFN.ConvertToTron()
+#
+#FFN = FeedForwardNeuralNetwork([2,8,10])
+#FFN.Predict([0,1])
+#FFN.ConvertToTron()
 
 
 

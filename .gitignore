@@ -4,3 +4,4 @@ tronbox/src/js/metacoin-config.js
 tronbox/build
 tronbox/.env
 React/treddit/public/test.png
+*.pyc
