@@ -67,7 +67,7 @@ class FeedForwardNeuralNetwork():
                     
                     PrevLayerNeuron = layerstart + k
                     CurrentLayerNeuron = counter
-                    Weight = 0
+                    Weight = 1
                     Activation = 0
                     Connection = [PrevLayerNeuron, CurrentLayerNeuron, Weight, Activation]
                     print(Connection)
@@ -77,10 +77,54 @@ class FeedForwardNeuralNetwork():
                     
                 
             layerstart += PreviousLayer
-                    
+            
+    #set make a prediction given data
+    def Predict(self, Data):  
         
-FFN = FeedForwardNeuralNetwork([2,1,1])
+        CalculatedValues = []
+        
+        for i in range(self.LayerSizes[0]):
+            CalculatedValues.append(Data[i])
+        
+        counter = self.LayerSizes[0]
+        layerstart = 0
+        
+        #add connections
+        for i in range(1, len(self.LayerSizes)):
+            
+            PreviousLayer = self.LayerSizes[i - 1]
+            CurrentLayer = self.LayerSizes[i]
+            
+            for j in range(CurrentLayer):
+                value = 0
+                for k in range(PreviousLayer):
+                    
+                    PrevLayerNeuron = layerstart + k
+                    CurrentLayerNeuron = counter
+                    
+                    #find the connection weight of a given connection
+                    connectionWeight = 0
+                    
+                    for l in range(len(self.NeuronConnectonsWeights)):
+                        
+                        weight = self.NeuronConnectonsWeights[l]
+                        
+                        if(weight[0] == PrevLayerNeuron and weight[1] == CurrentLayerNeuron):
+                            connectionWeight = weight[2]
+                    
+                    value += ((self.NeuronBiases[CurrentLayerNeuron] *connectionWeight) * CalculatedValues[PrevLayerNeuron])
+                    
+                counter += 1
+                CalculatedValues.append(value)
+                    
+                
+            layerstart += PreviousLayer
+            print(CalculatedValues)
+            
 
+#
+FFN = FeedForwardNeuralNetwork([2,8,10])
+FFN.Predict([0,1])
 
 
 
