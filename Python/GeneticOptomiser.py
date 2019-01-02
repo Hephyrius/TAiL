@@ -36,6 +36,30 @@ class GeneticOptomiser():
         for i in range(self.PopulationSize):
             
             self.Population.append(FFN(self.NetworkSize))
-            
+            self.RandomizeIndividualNetwork(i)
+    
+    #init the network with random data
+    def RandomizeIndividualNetwork(self, NetworkNumber):
+        Network = self.Population[NetworkNumber]
+        
+        #randomise biases
+        for i in range(len(Network.NeuronBiases)):
+            Network.NeuronBiases[i] = r.randint(0,65536)
+            #print(Network.NeuronBiases[i])
+        
+        #randomise the connection weights
+        for i in range(len(Network.NeuronConnectonsWeights)):
+            Network.NeuronConnectonsWeights[i][2] = r.randint(0,65536)
+            #print(Network.NeuronConnectonsWeights[i])
+        
+    
 GN = GeneticOptomiser(50, [4,2,2])
-print(GN.Population[0].LayerSizes)
+#print(GN.Population[0].LayerSizes)
+
+
+
+
+
+
+
+

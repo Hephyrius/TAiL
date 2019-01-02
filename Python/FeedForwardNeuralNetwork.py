@@ -20,7 +20,6 @@ class FeedForwardNeuralNetwork():
     LayerSizes = []
     NeuronBiases = []
     NeuronConnectonsWeights = []
-    NeuronActivationFunctions = []
     TotalNeurons = 0
     NetworkFitness = 0
     
