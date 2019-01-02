@@ -13,42 +13,68 @@ contract TronAiNeuralNetwork {
     
     //Neural Network Values
     mapping(uint => uint) LayerSizes;
-    mapping(uint => mapping(uint => uint)) NeuronBiases;
+    mapping(uint => uint) NeuronLayers;
+    mapping(uint => uint) NeuronBiases;
     mapping(uint => mapping(uint => uint)) NeuronConnectionWeights;
-    mapping(uint => mapping(uint => uint)) ConnectionActivationFunctions;
+    mapping(uint => mapping(uint => uint)) NeuronActivationFunctions;
     
     constructor () public {
         //set the owner of the network to the contract creator
         NetworkOwner = msg.sender;
     }
     
-    function SetWeights(uint inputs, uint outputs, uint Layers, uint[] _LayerSizes, uint[] _Biases) public {
+    function SetWeights(uint[] _LayerSizes, uint[] _Biases, uint[] _Weights) public {
         
         require(NetworkSet == false, "Network has already been set up");
         require(msg.sender == NetworkOwner, "Non-Owner attempting to set network up");
+        require(_Weights.length % 4 == 0 , "Invalid weight data");
         
         //set the networks configuration
-        NumberInputs = inputs;
-        NumberOutputs = outputs;
-        NumberLayers = Layers;
+        NumberLayers = _LayerSizes.length;
         
         //seting layer sizes
         uint i;
         uint j;
         uint counter = 0;
+        
         for(i=0; i<_LayerSizes.length; i++){
+            
+            //set the input/output sizes
+            if(i == 0) {
+                NumberInputs = _LayerSizes[i];
+            }
+            else if(i == _LayerSizes.length -1){
+                NumberOutputs = _LayerSizes[i];
+            }
+            
             LayerSizes[i] = _LayerSizes[i];
             
             //set the biases of the network
             for(j=0; j<_LayerSizes[i]; j++){
-                NeuronBiases[i][j] = _Biases[counter];
+                
+                NeuronBiases[counter] = _Biases[counter];
+                NeuronLayers[counter] = i;
+
                 counter += 1;
             }
             
         }
         
+        //set the weights of the network
+        for(i=0; i<_Weights.length; i+=4){
+            
+            uint neuron1 = _Weights[i];
+            uint neuron2 = _Weights[i+1];
+            
+            //set the networks weights
+            NeuronConnectionWeights[neuron1][neuron2] = _Weights[i+2];
+            
+            //set the networks activation functions
+            NeuronActivationFunctions[neuron1][neuron2] = _Weights[i+3];
+        }
         
-        emit NetworkCreated(inputs, outputs, NetworkOwner);
+        
+        emit NetworkCreated(NumberInputs, NumberOutputs, NetworkOwner);
         
         //set the network to a perment change where it cant be changed.
         NetworkSet = true;
