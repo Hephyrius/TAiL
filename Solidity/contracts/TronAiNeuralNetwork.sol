@@ -12,8 +12,8 @@ contract TronAiNeuralNetwork {
     uint NumberLayers;
     
     //Neural Network Values
-    mapping(uint => uint) NeuronBiases;
     mapping(uint => uint) LayerSizes;
+    mapping(uint => mapping(uint => uint)) NeuronBiases;
     mapping(uint => mapping(uint => uint)) NeuronConnectionWeights;
     mapping(uint => mapping(uint => uint)) ConnectionActivationFunctions;
     
@@ -22,7 +22,7 @@ contract TronAiNeuralNetwork {
         NetworkOwner = msg.sender;
     }
     
-    function SetWeights(uint inputs, uint outputs, uint Layers, uint[] _LayerSizes, uint[] Values) public {
+    function SetWeights(uint inputs, uint outputs, uint Layers, uint[] _LayerSizes, uint[] _Biases) public {
         
         require(NetworkSet == false, "Network has already been set up");
         require(msg.sender == NetworkOwner, "Non-Owner attempting to set network up");
@@ -34,15 +34,19 @@ contract TronAiNeuralNetwork {
         
         //seting layer sizes
         uint i;
+        uint j;
+        uint counter = 0;
         for(i=0; i<_LayerSizes.length; i++){
             LayerSizes[i] = _LayerSizes[i];
+            
+            //set the biases of the network
+            for(j=0; j<_LayerSizes[i]; j++){
+                NeuronBiases[i][j] = _Biases[counter];
+                counter += 1;
+            }
+            
         }
         
-        /*uint j;
-        for(i=0; i<_LayerSizes.length; i++){
-            
-            j += 1;
-        }*/
         
         emit NetworkCreated(inputs, outputs, NetworkOwner);
         
