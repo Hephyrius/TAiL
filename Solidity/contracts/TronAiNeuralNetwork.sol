@@ -10,6 +10,7 @@ contract TronAiNeuralNetwork {
     uint NumberOutputs;
     uint NumberInputs;
     uint NumberLayers;
+    uint NumberNeurons;
     
     //Neural Network Values
     mapping(uint => uint) LayerSizes;
@@ -23,7 +24,8 @@ contract TronAiNeuralNetwork {
         NetworkOwner = msg.sender;
     }
     
-    function SetWeights(uint[] _LayerSizes, uint[] _Biases, uint[] _Weights) public {
+    //set up the neural network
+    function SetupNetwork(uint[] _LayerSizes, uint[] _Biases, uint[] _Weights) public {
         
         require(NetworkSet == false, "Network has already been set up");
         require(msg.sender == NetworkOwner, "Non-Owner attempting to set network up");
@@ -31,6 +33,7 @@ contract TronAiNeuralNetwork {
         
         //set the networks configuration
         NumberLayers = _LayerSizes.length;
+        NumberNeurons = _Biases.length;
         
         //seting layer sizes
         uint i;
@@ -80,7 +83,21 @@ contract TronAiNeuralNetwork {
         NetworkSet = true;
     }
     
-        event NetworkCreated (uint ins, uint out, address owner);
+    event NetworkCreated (uint ins, uint out, address owner);
+        
+    //make a prediction on user given data 
+    function Predict(uint[] data) public {
+        
+        require(data.length == NumberInputs, "Data is not the correct length");
+        
+        uint[] memory CalculatedValues = new uint[](NumberNeurons);
+        
+        //set the values for the first layer
+        for(uint i=0; i<data.length; i++){
+            CalculatedValues[i] = data[i];
+        }
+        
+    }
     
 }
 
