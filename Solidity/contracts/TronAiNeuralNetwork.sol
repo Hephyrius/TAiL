@@ -83,10 +83,11 @@ contract TronAiNeuralNetwork {
         NetworkSet = true;
     }
     
+    //event that shows that a neural network has been initialised.
     event NetworkCreated (uint ins, uint out, address owner);
         
     //make a prediction on user given data 
-    function Predict(uint[] data) public {
+    function Predict(uint[] data) public returns(uint[]){
         
         require(data.length == NumberInputs, "Data is not the correct length");
         
@@ -97,7 +98,54 @@ contract TronAiNeuralNetwork {
             CalculatedValues[i] = data[i];
         }
         
+        uint NeuronCount = data.length;
+        uint layerStart = 0;
+        //calculate values for each layer
+        for(i = 1; i<NumberLayers; i++){
+            
+            //get the layer sizes so that connection can be found
+            uint prevLayerSize = LayerSizes[i-1];
+            uint LayerSize = LayerSizes[i];
+            
+            //calculate values for a given layers neurons
+            for (uint j = 0; j<LayerSize; j ++){
+                uint value = 0;
+                
+                //calculate a value for each node multiplying by the weights.
+                for(uint k = 0; k<prevLayerSize; k++){
+                    uint ConnectedNeuron = layerStart + k;
+                    
+                    //The nodes value is increased by the the multiplacation of connection values, biases, and previous node values.
+                    value += (CalculatedValues[ConnectedNeuron] * (NeuronConnectionWeights[ConnectedNeuron][NeuronCount] * NeuronBiases[NeuronCount]));
+                }
+                
+                CalculatedValues[NeuronCount] = value;
+                
+                NeuronCount += 1;
+            }
+            
+            //this counter helps keep track/point to where the current layer is
+            layerStart += LayerSize;
+            
+        }
+        
+        //generating values for an event emit
+        uint[] memory RawValues = new uint[](LayerSizes[NumberLayers - 1]);
+        
+        for(i = 0; i<LayerSizes[NumberLayers - 1]; i++){
+            uint finalLayerNeuron =  (layerStart - LayerSizes[NumberLayers - 1]) + i;
+            RawValues[i] = CalculatedValues[finalLayerNeuron];
+            
+        }
+        
+        //emit an event to tell the user what the neural Prediction is
+        emit Prediction(RawValues);
+        
+        return RawValues;
     }
+    
+    //the prediction event tells the user what the network predicts, as well as raw values
+    event Prediction (uint[] RawValues);
     
 }
 
