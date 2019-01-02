@@ -19,7 +19,6 @@ import math
 class FeedForwardNeuralNetwork():
     
     LayerSizes = []
-    #NeuronLayers = []
     NeuronBiases = []
     NeuronConnectonsWeights = []
     NeuronActivationFunctions = []
@@ -31,7 +30,6 @@ class FeedForwardNeuralNetwork():
         
         print("Init Variables")
         self.LayerSizes = []
-        self.NeuronLayers = []
         self.NeuronBiases = []
         self.NeuronConnectons = []
         self.TotalNeurons = 0
