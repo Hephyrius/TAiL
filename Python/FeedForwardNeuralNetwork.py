@@ -30,12 +30,16 @@ class FeedForwardNeuralNetwork():
         #print("Init Variables")
         self.LayerSizes = []
         self.NeuronBiases = []
+        self.NeuronErrors = []
+        self.NeuronOutputs = []
         self.NeuronConnectons = []
+        self.TotalLayers = 0
         self.TotalNeurons = 0
         self.NetworkFitness = 0
         
         #print("Setting Up Networks")
         self.CreateNetwork(_LayerSizes)
+        self.RandomiseNetwork()
         
     #set up lists within the network
     def CreateNetwork(self, _LayerSizes):
@@ -46,12 +50,17 @@ class FeedForwardNeuralNetwork():
             
             self.LayerSizes.append(i)
             total += i
-        
+            
+        self.TotalLayers = len(self.LayerSizes)
         self.TotalNeurons = total
         
         #add biases to the bias list
         for i in range(total):
             self.NeuronBiases.append(0)
+            
+            #init values used by backprop
+            self.NeuronErrors.append(0)
+            self.NeuronOutputs.append(0)
             
         counter = self.LayerSizes[0]
         layerstart = 0
@@ -111,7 +120,7 @@ class FeedForwardNeuralNetwork():
                         if(weight[0] == PrevLayerNeuron and weight[1] == CurrentLayerNeuron):
                             connectionWeight = weight[2]
                     
-                    value += ((self.NeuronBiases[CurrentLayerNeuron] *connectionWeight) * CalculatedValues[PrevLayerNeuron])
+                    value += ((connectionWeight * CalculatedValues[PrevLayerNeuron]))
                     
                 counter += 1
                 CalculatedValues.append(value)
@@ -121,16 +130,50 @@ class FeedForwardNeuralNetwork():
             #print(CalculatedValues)
         
         Prediction = []
-        LastLayer = self.LayerSizes[len(self.LayerSizes)- 1]
         
-        for i in range(LastLayer):
-            layerstart = layerstart - LastLayer
+        total = 0
+        for i in range(self.TotalLayers):
+            self.LayerSizes.append(i)
             
-            Prediction.append(CalculatedValues[layerstart + i])
+            if i == (self.TotalLayers - 1):
+                LastLayer = self.LayerSizes[self.TotalLayers - 1]
+                print(LastLayer)
+                for j in range(LastLayer):
+                    index = total + j
+                    Prediction.append(CalculatedValues[index])
+                
+                
+            total += self.LayerSizes[i]
+        
+
+            
+        self.NeuronOutputs = CalculatedValues
+        
+        print(self.NeuronOutputs)
         
         return Prediction
-            
-                
+    
+    #init the network with random biases and weights
+    def RandomiseNetwork(self):
+
+        #randomise biases
+        for i in range(len(self.NeuronBiases)):
+            self.NeuronBiases[i] = r.randint(0,100)
+            #print(Network.NeuronBiases[i])
+        
+        #randomise the connection weights
+        for i in range(len(self.NeuronConnectonsWeights)):
+            self.NeuronConnectonsWeights[i][2] = r.randint(0,100)
+
+
+    #fitting the model using stochastic gradient descent
+    def BackPropergation(self):
+        print("Epoch")
+        
+        #calculate the error for a given example
+        prediction = self.Predict(x);
+        predictionError = y-np.argmax(prediction)
+        
             
     def ConvertToTron(self):
         bias = self.NeuronBiases
@@ -151,9 +194,9 @@ class FeedForwardNeuralNetwork():
 
         
         return data
-#
-#FFN = FeedForwardNeuralNetwork([2,8,10])
-#FFN.Predict([0,1])
+
+#FFN = FeedForwardNeuralNetwork([2,12,10])
+#print(FFN.Predict([2,3]))
 #FFN.ConvertToTron()
 
 
