@@ -149,7 +149,7 @@ class FeedForwardNeuralNetwork():
             
         self.NeuronOutputs = CalculatedValues
         
-        print(self.NeuronOutputs)
+        #print(self.NeuronOutputs)
         
         return Prediction
     
