@@ -13,6 +13,7 @@ This is also loosely based on my work on my KI python library - Github.com/hephy
 
 import random as r
 import copy
+import numpy as np
 from FeedForwardNeuralNetwork import FeedForwardNeuralNetwork as FFN
 
 class GeneticOptomiser():
@@ -38,7 +39,6 @@ class GeneticOptomiser():
             
             self.Population.append(FFN(self.NetworkSize))
             self.RandomizeIndividualNetwork(i)
-            self.MutateNetwork(i)
     
     #init the network with random data
     def RandomizeIndividualNetwork(self, NetworkNumber):
@@ -54,9 +54,13 @@ class GeneticOptomiser():
             Network.NeuronConnectonsWeights[i][2] = r.randint(0,65536)
             #print(Network.NeuronConnectonsWeights[i])
     
-    def MutateNetwork(self, NetworkNumber):
-        Network = self.Population[NetworkNumber]
-        NewNetwork = copy.deepcopy(self.Population[NetworkNumber])
+    def Mutate(self, NetworkNumber = 0, isNumber=True, NetworkValues=" "):
+        
+        if isNumber:
+            NewNetwork = copy.deepcopy(self.Population[NetworkNumber])
+        else:
+            NewNetwork = copy.deepcopy(NetworkValues)
+            
         NewNetwork.Fitness = 0
         
         #Mutate biases
@@ -137,9 +141,137 @@ class GeneticOptomiser():
         NewNetwork.NeuronConnectonsWeights = NeuronConnectonsWeights
         
         return NewNetwork
-        
     
-GN = GeneticOptomiser(50, [4,2,2])
+    #generate network from two other networks
+    def CrossOver(self, Network1, Network2):
+        NewNetwork = FFN(self.NetworkSize)
+        NetworkOne = self.Population[Network1]
+        NetworkTwo = self.Population[Network2]
+        
+        #crossover biases
+        for i in range(len(NewNetwork.NeuronBiases)):
+            if(i<len(NewNetwork.NeuronBiases)/2):
+                NewNetwork.NeuronBiases[i] = NetworkOne.NeuronBiases[i]
+            else:
+                NewNetwork.NeuronBiases[i] = NetworkTwo.NeuronBiases[i]
+            #print(Network.NeuronBiases[i])
+        
+        #crossover the connection weights
+        for i in range(len(NewNetwork.NeuronConnectonsWeights)):
+            try:
+                if(i< len(NewNetwork.NeuronConnectonsWeights) / 2):
+                    NewNetwork.NeuronConnectonsWeights[i][2] = NetworkOne.NeuronConnectonsWeights[i][2]
+                else:
+                    NewNetwork.NeuronConnectonsWeights[i][2] = NetworkTwo.NeuronConnectonsWeights[i][2]
+            except Exception as e:
+                print(e)
+                
+            #print(Network.NeuronConnectonsWeights[i])
+        return NewNetwork
+
+    def AssessNetworkAccuracy(self, NetworkNumber, X, Y):
+        
+        Network = self.Population[NetworkNumber]
+        
+        TotalValues = len(Y)
+        Accuracy = 0
+        
+        for i in range(len(Y)):
+            #print(i)
+            prediction = Network.Predict(X[i])
+            
+            if np.argmax(prediction) == Y[i]:
+                #print(np.argmax(prediction))
+                Accuracy += 1
+        
+        Fitness = Accuracy/TotalValues
+        Network.Fitness = Fitness
+    
+    #Assess the entire population
+    def AssessPopulation(self, X, Y):
+        
+        for i in range(len(self.Population)):
+            
+            self.AssessNetworkAccuracy(i, X, Y)
+        
+        bestFitness = 0
+        popfitness = 0
+        
+        for i in range(len(self.Population)):
+            popfitness += self.Population[i].Fitness
+            if self.Population[i].Fitness > bestFitness:
+                bestFitness = self.Population[i].Fitness
+        
+        popfitness = popfitness / self.PopulationSize
+        print("Best Fitness = " + str(bestFitness))
+        print("Population Fitness = " + str(popfitness))
+        
+        return bestFitness
+    
+    #do the entire GA process
+    def Fit(self, X, Y, NumIterations, Custom=False, Function=AssessPopulation):
+        
+        for i in range(NumIterations):
+            
+            #assess the networks
+            if Custom == False:
+                self.AssessPopulation(X, Y)
+            else:
+                Function(self, X, Y)
+            
+            #sort the population in fitness order
+            for j in range(len(self.Population)):
+                
+                for k in range(j+1, len(self.Population)):
+                    
+                    if self.Population[j].Fitness < self.Population[k].Fitness:
+                        
+                        net = self.Population[j]
+                        self.Population[j] = self.Population[k]
+                        self.Population[k] = net
+            
+            #store the best two in the bests array
+            self.Best = []
+            self.Best.append(self.Population[0])
+            self.Best.append(self.Population[1])
+            
+            
+            #Create a new Population
+            NewPopulation = []
+            NewPopulation.append(self.Population[0])
+            NewPopulation.append(self.Population[1])
+            
+            for i in range(self.PopulationSize - 2):
+                
+                operation = r.random()
+                
+                if operation <=0.25:
+                    
+                    net = r.randrange(0,self.PopulationSize/2)
+                    newNet = self.Mutate(NetworkNumber=net)
+                    NewPopulation.append(newNet)
+                
+                elif operation <= 0.75:
+                    
+                    net1 = int(r.randrange(0,self.PopulationSize/2))
+                    net2 = int(r.randrange(0,self.PopulationSize/2))
+                    net3 = self.CrossOver(net1, net2)
+                    NewPopulation.append(net3)
+                    
+                elif operation <= 0.9:
+                    net1 = int(r.randrange(0,self.PopulationSize/2))
+                    net2 = int(r.randrange(0,self.PopulationSize/2))
+                    
+                    net3 = self.CrossOver(net1, net2)
+                    net3 = self.Mutate(isNumber=False, NetworkValues=net3)
+                    NewPopulation.append(net3)
+                else: 
+                    #print(self.NetworkSize)
+                    NewPopulation.append(FFN(self.NetworkSize))
+            
+            self.Population = NewPopulation
+
+#GN = GeneticOptomiser(50, [4,2,2])
 #print(GN.Population[0].LayerSizes)
 
 

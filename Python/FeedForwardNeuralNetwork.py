@@ -13,6 +13,7 @@ This is also loosely based on my work on my KI python library - Github.com/hephy
 """
 
 import random as r
+import numpy as np
 import json
 
 class FeedForwardNeuralNetwork():
@@ -117,7 +118,19 @@ class FeedForwardNeuralNetwork():
                     
                 
             layerstart += PreviousLayer
-            print(CalculatedValues)
+            #print(CalculatedValues)
+        
+        Prediction = []
+        LastLayer = self.LayerSizes[len(self.LayerSizes)- 1]
+        
+        for i in range(LastLayer):
+            layerstart = layerstart - LastLayer
+            
+            Prediction.append(CalculatedValues[layerstart + i])
+        
+        return Prediction
+            
+                
             
     def ConvertToTron(self):
         bias = self.NeuronBiases
