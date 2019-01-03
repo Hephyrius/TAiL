@@ -38,7 +38,7 @@ class GeneticOptomiser():
         for i in range(self.PopulationSize):
             
             self.Population.append(FFN(self.NetworkSize))
-            self.RandomizeIndividualNetwork(i)
+            #self.RandomizeIndividualNetwork(i)
     
     #init the network with random data
     def RandomizeIndividualNetwork(self, NetworkNumber):
@@ -149,22 +149,21 @@ class GeneticOptomiser():
         NetworkTwo = self.Population[Network2]
         
         #crossover biases
-        for i in range(len(NewNetwork.NeuronBiases)):
-            if(i<len(NewNetwork.NeuronBiases)/2):
+        for i in range(NewNetwork.TotalNeurons):
+            if(i<NewNetwork.TotalNeurons/2):
                 NewNetwork.NeuronBiases[i] = NetworkOne.NeuronBiases[i]
             else:
                 NewNetwork.NeuronBiases[i] = NetworkTwo.NeuronBiases[i]
             #print(Network.NeuronBiases[i])
         
         #crossover the connection weights
-        for i in range(len(NewNetwork.NeuronConnectonsWeights)):
-            try:
-                if(i< len(NewNetwork.NeuronConnectonsWeights) / 2):
-                    NewNetwork.NeuronConnectonsWeights[i][2] = NetworkOne.NeuronConnectonsWeights[i][2]
-                else:
-                    NewNetwork.NeuronConnectonsWeights[i][2] = NetworkTwo.NeuronConnectonsWeights[i][2]
-            except Exception as e:
-                print(e)
+        for i in range(NewNetwork.TotalConnections):
+     
+            if(i< NewNetwork.TotalConnections / 2):
+                NewNetwork.NeuronConnectonsWeights[i][2] = NetworkOne.NeuronConnectonsWeights[i][2]
+            else:
+                NewNetwork.NeuronConnectonsWeights[i][2] = NetworkTwo.NeuronConnectonsWeights[i][2]
+   
                 
             #print(Network.NeuronConnectonsWeights[i])
         return NewNetwork
@@ -240,6 +239,8 @@ class GeneticOptomiser():
             NewPopulation = []
             NewPopulation.append(self.Population[0])
             NewPopulation.append(self.Population[1])
+            
+            print(self.Population[0].NeuronOutputs)
             
             for i in range(self.PopulationSize - 2):
                 

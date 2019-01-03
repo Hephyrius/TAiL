@@ -36,6 +36,7 @@ class FeedForwardNeuralNetwork():
         self.TotalLayers = 0
         self.TotalNeurons = 0
         self.NetworkFitness = 0
+        self.TotalConnections = 0
         
         #print("Setting Up Networks")
         self.CreateNetwork(_LayerSizes)
@@ -45,14 +46,17 @@ class FeedForwardNeuralNetwork():
     def CreateNetwork(self, _LayerSizes):
         
         total = 0
+        totalConnections = 1
         
         for i in _LayerSizes:
             
             self.LayerSizes.append(i)
+            totalConnections *= i
             total += i
             
         self.TotalLayers = len(self.LayerSizes)
         self.TotalNeurons = total
+        self.TotalConnections = totalConnections
         
         #add biases to the bias list
         for i in range(total):
@@ -98,7 +102,7 @@ class FeedForwardNeuralNetwork():
         layerstart = 0
         
         #add connections
-        for i in range(1, len(self.LayerSizes)):
+        for i in range(1, self.TotalLayers):
             
             PreviousLayer = self.LayerSizes[i - 1]
             CurrentLayer = self.LayerSizes[i]
@@ -137,7 +141,7 @@ class FeedForwardNeuralNetwork():
             
             if i == (self.TotalLayers - 1):
                 LastLayer = self.LayerSizes[self.TotalLayers - 1]
-                print(LastLayer)
+                #print(LastLayer)
                 for j in range(LastLayer):
                     index = total + j
                     Prediction.append(CalculatedValues[index])
