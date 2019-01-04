@@ -87,15 +87,15 @@ contract TronAiNeuralNetwork {
     event NetworkCreated (uint ins, uint out, address owner);
         
     //make a prediction on user given data 
-    function Predict(uint[] data) public returns(uint[]){
+    function Predict(uint[] data) public returns(int[]){
         
         require(data.length == NumberInputs, "Data is not the correct length");
         
-        uint[] memory CalculatedValues = new uint[](NumberNeurons);
+        int[] memory CalculatedValues = new int[](NumberNeurons);
         
         //set the values for the first layer
         for(uint i=0; i<data.length; i++){
-            CalculatedValues[i] = data[i];
+            CalculatedValues[i] = int(data[i]);
         }
         
         uint NeuronCount = data.length;
@@ -109,14 +109,14 @@ contract TronAiNeuralNetwork {
             
             //calculate values for a given layers neurons
             for (uint j = 0; j<LayerSize; j ++){
-                uint value = 0;
+                int value = 0;
                 
                 //calculate a value for each node multiplying by the weights.
                 for(uint k = 0; k<prevLayerSize; k++){
                     uint ConnectedNeuron = layerStart + k;
                     
                     //The nodes value is increased by the the multiplacation of connection values, biases, and previous node values.
-                    value += (CalculatedValues[ConnectedNeuron] * (NeuronConnectionWeights[ConnectedNeuron][NeuronCount] * NeuronBiases[NeuronCount]));
+                    value += IntegerSigmoid(CalculatedValues[ConnectedNeuron] * int(NeuronConnectionWeights[ConnectedNeuron][NeuronCount]));
                 }
                 
                 CalculatedValues[NeuronCount] = value;
@@ -130,7 +130,7 @@ contract TronAiNeuralNetwork {
         }
         
         //generating values for an event emit
-        uint[] memory RawValues = new uint[](LayerSizes[NumberLayers - 1]);
+        int[] memory RawValues = new int[](LayerSizes[NumberLayers - 1]);
         
         for(i = 0; i<LayerSizes[NumberLayers - 1]; i++){
             uint finalLayerNeuron =  (layerStart - LayerSizes[NumberLayers - 1]) + i;
@@ -145,7 +145,12 @@ contract TronAiNeuralNetwork {
     }
     
     //the prediction event tells the user what the network predicts, as well as raw values
-    event Prediction (uint[] RawValues);
+    event Prediction (int[] RawValues);
+    
+    //make a prediction on user given data 
+    function IntegerSigmoid(int x) public returns(int){
+        return x * (1 - x);
+    }
     
 }
 
