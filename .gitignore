@@ -5,3 +5,5 @@ tronbox/build
 tronbox/.env
 React/treddit/public/test.png
 *.pyc
+Python/NeuralNetworkConfiguration.json
+Python/NeuralNetworkConfigurationTest.json
