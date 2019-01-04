@@ -273,6 +273,8 @@ class GeneticOptomiser():
                     NewPopulation.append(FFN(self.NetworkSize))
             
             self.Population = NewPopulation
+            
+        self.Population[0].ConvertToTron()
 
 #GN = GeneticOptomiser(50, [4,2,2])
 #print(GN.Population[0].LayerSizes)
