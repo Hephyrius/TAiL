@@ -1,6 +1,10 @@
 pragma solidity >=0.4.23;
 
+import "./Math.sol";
+
 contract TronAiNeuralNetwork {
+    
+    using Math for uint;
     
     //Network Owner
     address NetworkOwner;
@@ -87,15 +91,15 @@ contract TronAiNeuralNetwork {
     event NetworkCreated (uint ins, uint out, address owner);
         
     //make a prediction on user given data 
-    function Predict(uint[] data) public returns(int[]){
+    function Predict(uint[] data) public returns(uint[]){
         
         require(data.length == NumberInputs, "Data is not the correct length");
         
-        int[] memory CalculatedValues = new int[](NumberNeurons);
+        uint[] memory CalculatedValues = new uint[](NumberNeurons);
         
         //set the values for the first layer
         for(uint i=0; i<data.length; i++){
-            CalculatedValues[i] = int(data[i]);
+            CalculatedValues[i] = data[i] * 1 ether;
         }
         
         uint NeuronCount = data.length;
@@ -109,14 +113,14 @@ contract TronAiNeuralNetwork {
             
             //calculate values for a given layers neurons
             for (uint j = 0; j<LayerSize; j ++){
-                int value = 0;
+                uint value = 0;
                 
                 //calculate a value for each node multiplying by the weights.
                 for(uint k = 0; k<prevLayerSize; k++){
                     uint ConnectedNeuron = layerStart + k;
-                    
+                    uint calculatedWeight = CalculatedValues[ConnectedNeuron].wmul(uint(NeuronConnectionWeights[ConnectedNeuron][NeuronCount]));
                     //The nodes value is increased by the the multiplacation of connection values, biases, and previous node values.
-                    value += IntegerSigmoid(CalculatedValues[ConnectedNeuron] * int(NeuronConnectionWeights[ConnectedNeuron][NeuronCount]));
+                    value += IntegerSigmoid(calculatedWeight);
                 }
                 
                 CalculatedValues[NeuronCount] = value;
@@ -130,7 +134,7 @@ contract TronAiNeuralNetwork {
         }
         
         //generating values for an event emit
-        int[] memory RawValues = new int[](LayerSizes[NumberLayers - 1]);
+        uint[] memory RawValues = new uint[](LayerSizes[NumberLayers - 1]);
         
         for(i = 0; i<LayerSizes[NumberLayers - 1]; i++){
             uint finalLayerNeuron =  (layerStart - LayerSizes[NumberLayers - 1]) + i;
@@ -145,11 +149,16 @@ contract TronAiNeuralNetwork {
     }
     
     //the prediction event tells the user what the network predicts, as well as raw values
-    event Prediction (int[] RawValues);
+    event Prediction (uint[] RawValues);
     
     //make a prediction on user given data 
-    function IntegerSigmoid(int x) public returns(int){
-        return x * (1 - x);
+    function IntegerSigmoid(uint x) public returns(uint){
+        uint exp = 2.718281828459045235 ether;
+        // 1 + exp(x)
+        exp = 1 ether + (exp ** x);
+        uint OneEth = 1 ether;
+        // 1/ (1* exp(x))
+        return OneEth.wdiv(exp);
     }
     
 }
