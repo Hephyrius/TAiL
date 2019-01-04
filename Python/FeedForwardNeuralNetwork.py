@@ -158,18 +158,18 @@ class FeedForwardNeuralNetwork():
         return Prediction
     
     def sigmoid(self, x):
-        return x*(1-x) 
+        return int (int(x)*(1-int(x))) 
     #init the network with random biases and weights
     def RandomiseNetwork(self):
 
         #randomise biases
         for i in range(len(self.NeuronBiases)):
-            self.NeuronBiases[i] = r.randint(0,100)
+            self.NeuronBiases[i] = r.randint(0,65536)
             #print(Network.NeuronBiases[i])
         
         #randomise the connection weights
         for i in range(len(self.NeuronConnectonsWeights)):
-            self.NeuronConnectonsWeights[i][2] = r.randint(0,100)
+            self.NeuronConnectonsWeights[i][2] = r.randint(0,65536)
 
 
     #fitting the model using stochastic gradient descent

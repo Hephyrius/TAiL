@@ -46,12 +46,12 @@ class GeneticOptomiser():
         
         #randomise biases
         for i in range(len(Network.NeuronBiases)):
-            Network.NeuronBiases[i] = r.randint(0,100)
+            Network.NeuronBiases[i] = r.randint(0,65536)
             #print(Network.NeuronBiases[i])
         
         #randomise the connection weights
         for i in range(len(Network.NeuronConnectonsWeights)):
-            Network.NeuronConnectonsWeights[i][2] = r.randint(0,100)
+            Network.NeuronConnectonsWeights[i][2] = r.randint(0,65536)
             #print(Network.NeuronConnectonsWeights[i])
     
     def Mutate(self, NetworkNumber = 0, isNumber=True, NetworkValues=" "):
@@ -71,12 +71,12 @@ class GeneticOptomiser():
             #take away a random amount
             if val <= 0:
                 
-                NewNetwork.NeuronBiases[i] = -r.randint(0,100)
+                NewNetwork.NeuronBiases[i] = -r.randint(0,65536)
             
             #randomise the weight value
             elif val <= 0.02:
                 
-                NewNetwork.NeuronBiases[i] = r.randint(0,100)
+                NewNetwork.NeuronBiases[i] = r.randint(0,65536)
             
             #increase by a factor
             elif val <= 0.04:
@@ -93,8 +93,8 @@ class GeneticOptomiser():
             if (NewNetwork.NeuronBiases[i] < 0):
                 NewNetwork.NeuronBiases[i] = 0
                 
-            elif(NewNetwork.NeuronBiases[i] > 100):
-                NewNetwork.NeuronBiases[i] = 100
+            elif(NewNetwork.NeuronBiases[i] > 65536):
+                NewNetwork.NeuronBiases[i] = 65536
             #print(Network.NeuronBiases[i])
         
         #Mutate the connection weights
@@ -107,12 +107,12 @@ class GeneticOptomiser():
             #take away a random amount
             if val <= 0:
                 
-                NeuronConnectonsWeights[i][2] = -r.randint(0,100)
+                NeuronConnectonsWeights[i][2] = -r.randint(0,65536)
             
             #randomise the weight value
             elif val <= 0.02:
                 
-                NeuronConnectonsWeights[i][2] = r.randint(0,100)
+                NeuronConnectonsWeights[i][2] = r.randint(0,65536)
             
             #increase by a factor
             elif val <= 0.04:
@@ -129,8 +129,8 @@ class GeneticOptomiser():
             if (NeuronConnectonsWeights[i][2] < 0):
                 NeuronConnectonsWeights[i][2] = 0
                 
-            elif(NeuronConnectonsWeights[i][2] > 100):
-                NeuronConnectonsWeights[i][2] = 100
+            elif(NeuronConnectonsWeights[i][2] > 65536):
+                NeuronConnectonsWeights[i][2] = 65536
             
             
             #ensure that we have an int value after mutation
@@ -242,7 +242,7 @@ class GeneticOptomiser():
             NewPopulation.append(self.Population[0])
             NewPopulation.append(self.Population[1])
             
-            print(self.Population[0].NeuronOutputs)
+            #print(self.Population[0].NeuronOutputs)
             
             for i in range(self.PopulationSize - 2):
                 
@@ -250,20 +250,20 @@ class GeneticOptomiser():
                 
                 if operation <=0.25:
                     
-                    net = r.randrange(0,self.PopulationSize/2)
+                    net = int(r.randrange(0,(self.PopulationSize*0.4)))
                     newNet = self.Mutate(NetworkNumber=net)
                     NewPopulation.append(newNet)
                 
                 elif operation <= 0.75:
                     
-                    net1 = int(r.randrange(0,self.PopulationSize/2))
-                    net2 = int(r.randrange(0,self.PopulationSize/2))
+                    net1 = int(r.randrange(0,(self.PopulationSize*0.4)))
+                    net2 = int(r.randrange(0,(self.PopulationSize*0.4)))
                     net3 = self.CrossOver(net1, net2)
                     NewPopulation.append(net3)
                     
                 elif operation <= 0.9:
-                    net1 = int(r.randrange(0,self.PopulationSize/2))
-                    net2 = int(r.randrange(0,self.PopulationSize/2))
+                    net1 = int(r.randrange(0,(self.PopulationSize*0.4)))
+                    net2 = int(r.randrange(0,(self.PopulationSize*0.4)))
                     
                     net3 = self.CrossOver(net1, net2)
                     net3 = self.Mutate(isNumber=False, NetworkValues=net3)
