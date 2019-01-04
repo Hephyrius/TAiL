@@ -124,7 +124,7 @@ class FeedForwardNeuralNetwork():
                         if(weight[0] == PrevLayerNeuron and weight[1] == CurrentLayerNeuron):
                             connectionWeight = weight[2]
                     
-                    value += ((connectionWeight * CalculatedValues[PrevLayerNeuron]))
+                    value += (self.sigmoid(connectionWeight * CalculatedValues[PrevLayerNeuron]))
                     
                 counter += 1
                 CalculatedValues.append(value)
@@ -157,6 +157,8 @@ class FeedForwardNeuralNetwork():
         
         return Prediction
     
+    def sigmoid(self, x):
+        return x*(1-x) 
     #init the network with random biases and weights
     def RandomiseNetwork(self):
 

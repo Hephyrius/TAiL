@@ -46,12 +46,12 @@ class GeneticOptomiser():
         
         #randomise biases
         for i in range(len(Network.NeuronBiases)):
-            Network.NeuronBiases[i] = r.randint(0,65536)
+            Network.NeuronBiases[i] = r.randint(0,100)
             #print(Network.NeuronBiases[i])
         
         #randomise the connection weights
         for i in range(len(Network.NeuronConnectonsWeights)):
-            Network.NeuronConnectonsWeights[i][2] = r.randint(0,65536)
+            Network.NeuronConnectonsWeights[i][2] = r.randint(0,100)
             #print(Network.NeuronConnectonsWeights[i])
     
     def Mutate(self, NetworkNumber = 0, isNumber=True, NetworkValues=" "):
@@ -71,12 +71,12 @@ class GeneticOptomiser():
             #take away a random amount
             if val <= 0:
                 
-                NewNetwork.NeuronBiases[i] = -r.randint(0,65536)
+                NewNetwork.NeuronBiases[i] = -r.randint(0,100)
             
             #randomise the weight value
             elif val <= 0.02:
                 
-                NewNetwork.NeuronBiases[i] = r.randint(0,65536)
+                NewNetwork.NeuronBiases[i] = r.randint(0,100)
             
             #increase by a factor
             elif val <= 0.04:
@@ -93,8 +93,8 @@ class GeneticOptomiser():
             if (NewNetwork.NeuronBiases[i] < 0):
                 NewNetwork.NeuronBiases[i] = 0
                 
-            elif(NewNetwork.NeuronBiases[i] > 65536):
-                NewNetwork.NeuronBiases[i] = 65536
+            elif(NewNetwork.NeuronBiases[i] > 100):
+                NewNetwork.NeuronBiases[i] = 100
             #print(Network.NeuronBiases[i])
         
         #Mutate the connection weights
@@ -107,12 +107,12 @@ class GeneticOptomiser():
             #take away a random amount
             if val <= 0:
                 
-                NeuronConnectonsWeights[i][2] = -r.randint(0,65536)
+                NeuronConnectonsWeights[i][2] = -r.randint(0,100)
             
             #randomise the weight value
             elif val <= 0.02:
                 
-                NeuronConnectonsWeights[i][2] = r.randint(0,65536)
+                NeuronConnectonsWeights[i][2] = r.randint(0,100)
             
             #increase by a factor
             elif val <= 0.04:
@@ -129,8 +129,8 @@ class GeneticOptomiser():
             if (NeuronConnectonsWeights[i][2] < 0):
                 NeuronConnectonsWeights[i][2] = 0
                 
-            elif(NeuronConnectonsWeights[i][2] > 65536):
-                NeuronConnectonsWeights[i][2] = 65536
+            elif(NeuronConnectonsWeights[i][2] > 100):
+                NeuronConnectonsWeights[i][2] = 100
             
             
             #ensure that we have an int value after mutation
@@ -163,7 +163,9 @@ class GeneticOptomiser():
                 NewNetwork.NeuronConnectonsWeights[i][2] = NetworkOne.NeuronConnectonsWeights[i][2]
             else:
                 NewNetwork.NeuronConnectonsWeights[i][2] = NetworkTwo.NeuronConnectonsWeights[i][2]
-   
+            
+
+            
                 
             #print(Network.NeuronConnectonsWeights[i])
         return NewNetwork
