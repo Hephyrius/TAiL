@@ -137,7 +137,7 @@ class FeedForwardNeuralNetwork():
         
         total = 0
         for i in range(self.TotalLayers):
-            self.LayerSizes.append(i)
+            #self.LayerSizes.append(i)
             
             if i == (self.TotalLayers - 1):
                 LastLayer = self.LayerSizes[self.TotalLayers - 1]
