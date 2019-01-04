@@ -99,7 +99,7 @@ contract TronAiNeuralNetwork {
         
         //set the values for the first layer
         for(uint i=0; i<data.length; i++){
-            CalculatedValues[i] = data[i] * 1 ether;
+            CalculatedValues[i] = data[i];
         }
         
         uint NeuronCount = data.length;
@@ -120,7 +120,9 @@ contract TronAiNeuralNetwork {
                     uint ConnectedNeuron = layerStart + k;
                     uint calculatedWeight = CalculatedValues[ConnectedNeuron].wmul(uint(NeuronConnectionWeights[ConnectedNeuron][NeuronCount]));
                     //The nodes value is increased by the the multiplacation of connection values, biases, and previous node values.
-                    value += IntegerSigmoid(calculatedWeight);
+                    
+                    // apply the activation function (this doesnt really do anything)...
+                    value += IntegerRelu(calculatedWeight);
                 }
                 
                 CalculatedValues[NeuronCount] = value;
@@ -136,14 +138,24 @@ contract TronAiNeuralNetwork {
         //generating values for an event emit
         uint[] memory RawValues = new uint[](LayerSizes[NumberLayers - 1]);
         
-        for(i = 0; i<LayerSizes[NumberLayers - 1]; i++){
-            uint finalLayerNeuron =  (layerStart - LayerSizes[NumberLayers - 1]) + i;
-            RawValues[i] = CalculatedValues[finalLayerNeuron];
+        NeuronCount = 0;
+        for(i = 0; i<NumberLayers; i++){
             
+            uint LastLayerSize = LayerSizes[NumberLayers - 1];
+            
+            if ( i == NumberLayers - 1){
+                
+                for(j =0; j<LastLayerSize; j++){
+                    RawValues[i] = CalculatedValues[NeuronCount+j];
+                }
+                
+            }
+            
+            NeuronCount += LayerSizes[i];
         }
         
         //emit an event to tell the user what the neural Prediction is
-        emit Prediction(RawValues);
+        emit Prediction(CalculatedValues);
         
         return RawValues;
     }
@@ -159,6 +171,16 @@ contract TronAiNeuralNetwork {
         uint OneEth = 1 ether;
         // 1/ (1* exp(x))
         return OneEth.wdiv(exp);
+    }
+    
+    //the relu activation wont change anything as the neural networks are not using ints, therefore cannot be negative
+    //its here as its better to remember we need some activation function!
+    function IntegerRelu(uint x) public returns (uint){
+        if(x < 0){
+            return 0;
+        }else {
+            return x;
+        }
     }
     
 }
