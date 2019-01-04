@@ -39,7 +39,7 @@ library Math {
         return x >= y ? x : y;
     }
 
-    uint constant WAD = 10 ** 18;
+    uint constant WAD = 10 ** 6;
     uint constant RAY = 10 ** 27;
 
     function wmul(uint x, uint y) internal pure returns (uint z) {

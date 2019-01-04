@@ -190,7 +190,7 @@ class FeedForwardNeuralNetwork():
         bias = []
         
         for i in range(self.TotalNeurons):
-            bias.append(int(self.NeuronBiases[i] * 1e18))
+            bias.append(int(self.NeuronBiases[i] * 1e6))
         
         layerSize = []
         for i in range(self.TotalLayers):
@@ -202,7 +202,7 @@ class FeedForwardNeuralNetwork():
 
             ConnectionWeights.append(self.NeuronConnectonsWeights[i][0])
             ConnectionWeights.append(self.NeuronConnectonsWeights[i][1])
-            ConnectionWeights.append(int(self.NeuronConnectonsWeights[i][2] * 1e18))
+            ConnectionWeights.append(int(self.NeuronConnectonsWeights[i][2] * 1e6))
             ConnectionWeights.append(self.NeuronConnectonsWeights[i][3])
         
         data = {'Biases':bias, 'LayerSize':layerSize, 'Connections':ConnectionWeights }
