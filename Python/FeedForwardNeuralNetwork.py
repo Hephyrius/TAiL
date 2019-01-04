@@ -124,7 +124,7 @@ class FeedForwardNeuralNetwork():
                         if(weight[0] == PrevLayerNeuron and weight[1] == CurrentLayerNeuron):
                             connectionWeight = weight[2]
                     
-                    value += (self.sigmoid(connectionWeight * CalculatedValues[PrevLayerNeuron]))
+                    value += (self.relu(connectionWeight * CalculatedValues[PrevLayerNeuron]))
                     
                 counter += 1
                 CalculatedValues.append(value)
@@ -158,18 +158,22 @@ class FeedForwardNeuralNetwork():
         return Prediction
     
     def sigmoid(self, x):
-        return int (int(x)*(1-int(x))) 
+        return 1 / (1 + np.exp(-x))  
+    
+    def relu(self, x):
+        return x * (x > 0)
+        
     #init the network with random biases and weights
     def RandomiseNetwork(self):
 
         #randomise biases
         for i in range(len(self.NeuronBiases)):
-            self.NeuronBiases[i] = r.randint(0,65536)
+            self.NeuronBiases[i] = r.random()
             #print(Network.NeuronBiases[i])
         
         #randomise the connection weights
         for i in range(len(self.NeuronConnectonsWeights)):
-            self.NeuronConnectonsWeights[i][2] = r.randint(0,65536)
+            self.NeuronConnectonsWeights[i][2] = r.random()
 
 
     #fitting the model using stochastic gradient descent
@@ -186,7 +190,7 @@ class FeedForwardNeuralNetwork():
         bias = []
         
         for i in range(self.TotalNeurons):
-            bias.append(self.NeuronBiases[i])
+            bias.append(int(self.NeuronBiases[i] * 1e18))
         
         layerSize = []
         for i in range(self.TotalLayers):
@@ -198,14 +202,14 @@ class FeedForwardNeuralNetwork():
 
             ConnectionWeights.append(self.NeuronConnectonsWeights[i][0])
             ConnectionWeights.append(self.NeuronConnectonsWeights[i][1])
-            ConnectionWeights.append(self.NeuronConnectonsWeights[i][2])
+            ConnectionWeights.append(int(self.NeuronConnectonsWeights[i][2] * 1e18))
             ConnectionWeights.append(self.NeuronConnectonsWeights[i][3])
         
         data = {'Biases':bias, 'LayerSize':layerSize, 'Connections':ConnectionWeights }
         
         print("Saving Configuration as NeuralNetworkConfiguration.Json")
         
-        with open('NeuralNetworkConfiguration.json', 'w') as fp:
+        with open('NeuralNetworkConfigurationTest.json', 'w') as fp:
             json.dump(data, fp)
 
         
