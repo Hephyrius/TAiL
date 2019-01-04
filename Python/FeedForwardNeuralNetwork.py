@@ -182,14 +182,24 @@ class FeedForwardNeuralNetwork():
         
             
     def ConvertToTron(self):
-        bias = self.NeuronBiases
-        layerSize = self.LayerSizes
+        
+        bias = []
+        
+        for i in range(self.TotalNeurons):
+            bias.append(self.NeuronBiases[i])
+        
+        layerSize = []
+        for i in range(self.TotalLayers):
+            layerSize.append(self.LayerSizes[i])
         
         ConnectionWeights = []
         
-        for i in range(len(self.NeuronConnectonsWeights)):
-            for j in self.NeuronConnectonsWeights[i]:
-                ConnectionWeights.append(j)
+        for i in range(self.TotalConnections):
+
+            ConnectionWeights.append(self.NeuronConnectonsWeights[i][0])
+            ConnectionWeights.append(self.NeuronConnectonsWeights[i][1])
+            ConnectionWeights.append(self.NeuronConnectonsWeights[i][2])
+            ConnectionWeights.append(self.NeuronConnectonsWeights[i][3])
         
         data = {'Biases':bias, 'LayerSize':layerSize, 'Connections':ConnectionWeights }
         
