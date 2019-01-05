@@ -152,16 +152,6 @@ contract TAiLNN {
     //the prediction event tells the user what the network predicts, as well as raw values
     event Prediction (uint[] RawValues);
     
-    //make a prediction on user given data 
-    function IntegerSigmoid(uint x) public returns(uint){
-        uint exp = 2.718281828459045235 ether;
-        // 1 + exp(x)
-        exp = 1 ether + (exp ** x);
-        uint OneEth = 1 ether;
-        // 1/ (1* exp(x))
-        return OneEth.wdiv(exp);
-    }
-    
     //the relu activation wont change anything as the neural networks are not using ints, therefore cannot be negative
     //its here as its better to remember we need some activation function!
     function IntegerRelu(uint x) public returns (uint){
