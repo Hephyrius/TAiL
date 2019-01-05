@@ -8,7 +8,7 @@ class SiteFooter extends Component {
         <div className="header">
             <footer class="page-footer font-small blue">
                 <div class="footer-copyright text-center py-3">© TAiL 2019
-                    <p> <Link to="/">Home</Link> | <Link to="/new-post">Create New Network</Link> | <Link to="/about">About</Link></p>
+                    <p><Link to="/about">About</Link> | <Link to="/New-Network">Create New Network</Link> | <Link to="/Predict">Make Prediction</Link> | <Link to="/">Networks</Link></p>
                 </div>
             </footer>
         </div>

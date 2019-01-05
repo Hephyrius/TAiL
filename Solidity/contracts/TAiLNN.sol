@@ -144,13 +144,13 @@ contract TAiLNN {
         }
         
         //emit an event to tell the user what the neural Prediction is for the last layer
-        emit Prediction(RawValues);
+        emit PredictionMade(RawValues);
         
         return RawValues;
     }
     
     //the prediction event tells the user what the network predicts, as well as raw values
-    event Prediction (uint[] RawValues);
+    event PredictionMade(uint[] RawValues);
     
     //the relu activation wont change anything as the neural networks are not using ints, therefore cannot be negative
     //its here as its better to remember we need some activation function!

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-class NetworkItem extends Component {
+class PredictionItem extends Component {
   render() {
 
     return (
-      <div className="NetworkItem">
+      <div className="PredictionItem">
       <p></p>
 
         <div class="container-fluid">
@@ -13,12 +13,13 @@ class NetworkItem extends Component {
               
               <div class="col-md-10">
                 <div className="title-area">
-                    <span className="title"> Network Number : {this.props.Network.NetworkNumber}</span>
+                    <span className="title"> Network Number : {this.props.Prediction.NetworkNumber}</span>
+                    <span className="Values"> Values: {this.props.Prediction.Value}</span>
                 </div>
 
                 <div className="meta-area">
-                   <strong> Submitted by {this.props.Network.Owner}</strong>
-                   <strong> Deployed at {this.props.Network.Network}</strong>
+                   <strong> Submitted by {this.props.Prediction.Owner}</strong>
+                   <strong> Deployed at {this.props.Prediction.Network}</strong>
                 </div>
                 
               </div>
@@ -30,4 +31,4 @@ class NetworkItem extends Component {
   }
 }
 
-export default NetworkItem;
+export default PredictionItem;

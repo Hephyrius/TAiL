@@ -126,7 +126,7 @@ class PredictionForm extends React.Component {
                 
                 
 
-                <input type="submit" class="btn btn-outline-light" value="Submit Link" />
+                <input type="submit" class="btn btn-outline-dark" value="Make Prediction" />
               </form>
             </div>
           </div>

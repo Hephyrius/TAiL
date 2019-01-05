@@ -4,23 +4,34 @@ import {a2hex, hex2a, Time2a, intToUint} from "./parser"
 
 const TronWeb = require('tronweb')
 
+var tronWeb;
 
 //connecting tronweb to the local docker node
-const tronWeb = new TronWeb(
-    "http://127.0.0.1:9090",
-    "http://127.0.0.1:9090",
-    "http://127.0.0.1:9090",
-    'da146374a75310b9666e834ee4ad0866d6f4035967bfc76217c5a495fff9f0d0',
+const tronWebDefault = new TronWeb(
+    "https://api.trongrid.io",
+    "https://api.trongrid.io",
+    "https://api.trongrid.io",
+    'da146374a75310b9666e834ee4ad0866d6f4035967bfc76217c5a495fff9f0d0', //default testnet pkey
 )
 
+function dynamicTronlink(){
+    var tron = tronWebDefault
+
+    if (!!window.tronWeb){
+        tron = window.tronWeb;
+    }
+
+    return tron;
+}
+
 //address of the contract
-const contractAddress = "TVafe4sdqRZqHr2LH6WsCitaGkC1MhK7WQ";
+const contractAddress = "TBf9RVryATzFR5FsQv6Rg8JyAiEiGaiHPD";
 
 export async function CreateNetwork(fr) {
     
 
     //load the contract 
-    const contract = await tronWeb.contract().at(contractAddress);
+    const contract = await window.tronWeb.contract().at(contractAddress);
 
     //construct the bias array
     let Biases = []
@@ -73,14 +84,14 @@ export async function CreateNetwork(fr) {
 export async function Predict(Network, Values) {
 
     //load the contract 
-    const contract = await tronWeb.contract().at(contractAddress);
+    const contract = await window.tronWeb.contract().at(contractAddress);
 
     //construct the bias array
     let Inputs = []
 
     for(var i =0; i<Values.length; i++){
         if (Values[i] !== ''){
-            var n = intToUint((Number(Values[i]) ))
+            var n = intToUint((Number(Values[i]) * 100000))
             console.log(n)
             Inputs = Inputs.concat(n)
         }
@@ -111,7 +122,7 @@ export async function Predict(Network, Values) {
 
 //get data from contract events and convert it into a readable/useable state
 export async function getNetworks() {
-
+    tronWeb = dynamicTronlink()
     //load the contract 
     const events = await tronWeb.getEventResult(contractAddress, 0, "NetworkCreated", 0,  200, 1);
 
@@ -143,4 +154,29 @@ export async function getNetworks() {
     localStorage.setItem("Networks", JSON.stringify(Networks));
 
     return Networks;
+}
+
+//get data from contract events and convert it into a readable/useable state
+export async function getPredictions() {
+    tronWeb = dynamicTronlink()
+
+    //load the contract 
+    const events = await tronWeb.getEventResult(contractAddress, 0, "NetworkPredictionMade", 0,  200, 1);
+    console.log(events)
+    
+    var Predictions = []
+    for(var i=0; i<events.length; i++){
+
+        //format data so it can be used and stored better
+        var Prediction = {
+            NetworkNumber: events[i]['result']['network'],
+            Network: events[i]['result']['RawValues']
+          }
+
+          Predictions = Predictions.concat(Prediction);
+    }
+
+    localStorage.setItem("Predictions", JSON.stringify(Predictions));
+
+    return Predictions;
 }

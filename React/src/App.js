@@ -9,7 +9,7 @@ import About from "./components/About";
 import SiteHeader from "./components/SiteHeader";
 import SiteFooter from "./components/SiteFooter";
 import "./bootstrap.css";
-import {getNetworks} from "./utils/tronweb";
+import {getNetworks, getPredictions} from "./utils/tronweb";
 
 class App extends Component {
   
@@ -17,11 +17,15 @@ class App extends Component {
     super();
     this.state = [{
       posts : [],
-      postData : getNetworks()
+      Networks : getNetworks(), 
+      Predictions:getPredictions()
     }]
+    
+    
 
   }
 
+  
   render() {
     return (
       <Router>   
@@ -31,7 +35,7 @@ class App extends Component {
 
           <Route path="/New-Network" component={NewNetwork} />
 
-          <Route path="/Networks" component={NetworksP} />
+          <Route path="/Predictions" component={PredictionsP} />
 
           <Route path="/Predict" component={Predict} />
 
@@ -49,8 +53,8 @@ class App extends Component {
   }
 }
 
-const Home = () => ( <Predictions />);
-const NetworksP = () => ( <Networks />);
+const PredictionsP = () => ( <Predictions />);
+const Home = () => ( <Networks />);
 const NewNetwork = () => <SubmissionForm /> ;
 const Predict = () => <PredictionForm /> ;
 const AboutP = ({ match }) => ( <About />);

@@ -1,6 +1,5 @@
 pragma solidity >=0.4.23;
 
-import "./Math.sol";
 import "./TAiLNN.sol";
 
 contract TAiL {
@@ -36,16 +35,14 @@ contract TAiL {
     event NetworkCreated (address Network, uint NetworkNumber, address owner);
         
     //make a prediction on user given data 
-    function Predict(uint NetworkNumber, uint[] data) public{
+    function Predict(uint NetworkNumber, uint[] data) public {
         
-        uint[] memory prediction = TAiLNN(Networks[NetworkNumber]).Predict(data);
-        emit Prediction(NetworkNumber, prediction);
-        
+        emit NetworkPredictionMade(NetworkNumber, TAiLNN(Networks[NetworkNumber]).Predict(data));
         
     }
     
     //the prediction event tells the user what the network predicts, as well as raw values
-    event Prediction (uint network, uint[] RawValues);
+    event NetworkPredictionMade(uint network, uint[] RawValues);
 
     
 }
