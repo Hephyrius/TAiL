@@ -39,3 +39,12 @@ export function Time2a(timestamp){
 }
 
 
+export function MagnetCheck(str){
+    var valid = true;
+    if (!str.match("magnet:?")){
+        valid = false;
+    }
+    return valid;
+    
+}
+

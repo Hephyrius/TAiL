@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-import Posts from "./components/Posts";
-import PostPage from "./components/PostPage";
-import Form from "./components/Form";
+import TorrentPage from "./components/TorrentPage";
+import SubmissionForm from "./components/SubmissionForm";
 import About from "./components/About";
 import SiteHeader from "./components/SiteHeader";
 import SiteFooter from "./components/SiteFooter";
 import Search from "./components/Search";
-import Account from "./components/Account";
 import "./bootstrap.css";
-import {getPosts, getComments, getVoteCounters, getCommentVoteCounters, getUserData, getDonations} from "./utils/tronweb";
+import {getNetworks} from "./utils/tronweb";
 
 class App extends Component {
   
@@ -18,13 +16,9 @@ class App extends Component {
     super();
     this.state = [{
       posts : [],
-      postData : getPosts(),
-      commentData: getComments()
+      postData : getNetworks()
     }]
-    getVoteCounters()
-    getCommentVoteCounters()
-    getUserData()
-    getDonations()
+
   }
 
   render() {
@@ -40,11 +34,8 @@ class App extends Component {
 
           <Route path="/about" component={AboutP} />
 
-          <Route path="/post=:id" component={PostP}/>
+          <Route path="/Torrent=:id" component={TorrentP}/>
 
-          <Route path="/search" component={SearchP}/>
-
-          <Route path = "/account" component ={AccountP} />
 
           <SiteFooter />
         </div>
@@ -56,11 +47,10 @@ class App extends Component {
   }
 }
 
-const Home = () => <Posts filterword={""}/>;
-const newpost = () => <Form /> ;
-const PostP = ({ match }) => ( <PostPage postid={match.params.id} />);
+const Home = () => ( <Search />);
+const newpost = () => <SubmissionForm /> ;
+const TorrentP = ({ match }) => ( <TorrentPage TorrentNumber={match.params.id} />);
 const AboutP = ({ match }) => ( <About />);
 const SearchP = ({ match }) => ( <Search />);
-const AccountP = ({ match }) => ( <Account />);
 
 export default App;

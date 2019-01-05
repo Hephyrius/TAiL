@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Posts from "./Posts";
+import Torrents from "./Torrents";
 
 class Search extends Component {
 
@@ -22,7 +22,8 @@ class Search extends Component {
             <div id="container" class="container">
                 <div class="row text-black">
                     <div class="col-sm-10 offset-sm-1 text-center">
-                        <h3 class="display-3">Search Posts</h3>
+                        <h3 class="display-3">BlockTorrent</h3>
+                        <h5 class="display-5">Search Torrents</h5>
                             <div class="info-form">
                                 <form>  
                                     <div class="form-group">
@@ -31,7 +32,7 @@ class Search extends Component {
                                 </form>
                             </div>
                         </div>
-                    <Posts filterword={this.state.search}/>
+                    <Torrents filterword={this.state.search}/>
                 </div>
             </div>
         );

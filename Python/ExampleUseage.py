@@ -29,5 +29,5 @@ y = y.cat.codes
 #prepare the network
 #first input is the number of candidates in our optomiser
 #second is the layer sizes for the neural network
-Genetic = GN(10, [4,2,3])
-Genetic.Fit(x, y, 100)
+Genetic = GN(10, [4,1,2,3])
+Genetic.Fit(x, y, 10)
