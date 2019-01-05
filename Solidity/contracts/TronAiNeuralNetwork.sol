@@ -131,31 +131,21 @@ contract TronAiNeuralNetwork {
             }
             
             //this counter helps keep track/point to where the current layer is
-            layerStart += LayerSize;
+            layerStart += prevLayerSize;
             
         }
         
         //generating values for an event emit
-        uint[] memory RawValues = new uint[](LayerSizes[NumberLayers - 1]);
+        uint LastLayerSize = LayerSizes[NumberLayers - 1];
+        uint[] memory RawValues = new uint[](LastLayerSize);
         
-        NeuronCount = 0;
-        for(i = 0; i<NumberLayers; i++){
+        for(i =0; i<LastLayerSize; i++){
             
-            uint LastLayerSize = LayerSizes[NumberLayers - 1];
-            
-            if ( i == NumberLayers - 1){
-                
-                for(j =0; j<LastLayerSize; j++){
-                    RawValues[i] = CalculatedValues[NeuronCount+j];
-                }
-                
-            }
-            
-            NeuronCount += LayerSizes[i];
+            RawValues[((LastLayerSize-i) - 1)] = CalculatedValues[((CalculatedValues.length-1)-i)];
         }
         
-        //emit an event to tell the user what the neural Prediction is
-        emit Prediction(CalculatedValues);
+        //emit an event to tell the user what the neural Prediction is for the last layer
+        emit Prediction(RawValues);
         
         return RawValues;
     }
