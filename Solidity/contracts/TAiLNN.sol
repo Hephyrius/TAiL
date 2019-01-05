@@ -2,7 +2,7 @@ pragma solidity >=0.4.23;
 
 import "./Math.sol";
 
-contract TronAiNeuralNetwork {
+contract TAiLNN {
     
     using Math for uint;
     
@@ -32,7 +32,6 @@ contract TronAiNeuralNetwork {
     function SetupNetwork(uint[] _LayerSizes, uint[] _Biases, uint[] _Weights) public {
         
         require(NetworkSet == false, "Network has already been set up");
-        require(msg.sender == NetworkOwner, "Non-Owner attempting to set network up");
         require(_Weights.length % 4 == 0 , "Invalid weight data");
         
         //set the networks configuration
