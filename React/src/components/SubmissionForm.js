@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {SubmitMagnetLink} from "../utils/tronweb";
+import {CreateNetwork} from "../utils/tronweb";
 
 class SubmissionForm extends React.Component {
   constructor(props) {
@@ -10,27 +10,41 @@ class SubmissionForm extends React.Component {
       _TorrentDescription: ''
     };
 
-    this.handleTitleChange = this.handleTitleChange.bind(this);
-    this.handleLinkChange = this.handleLinkChange.bind(this);
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.loadFile = this.loadFile.bind(this);
   }
 
-  handleTitleChange(event) {
-    this.setState({_TorrentTitle: event.target.value});
-  }
+  loadFile(e) {
+    console.log("clicked")
+    var input, file, fr;
 
-  handleLinkChange(event) {
-    this.setState({_MagnetLink: event.target.value});
-  }
+    if (typeof window.FileReader !== 'function') {
+      alert("The file API isn't supported on this browser yet.");
+      return;
+    }
 
-  handleDescriptionChange(event) {
-    this.setState({_TorrentDescription: event.target.value});
-  }
-
-  handleSubmit(event) {
-    SubmitMagnetLink(this.state._TorrentTitle, this.state._TorrentDescription, this.state._MagnetLink, 0, 0, 0);
-    event.preventDefault();
+    input = document.getElementById('fileinput');
+    if (!input) {
+      alert("Um, couldn't find the fileinput element.");
+    }
+    else if (!input.files) {
+      alert("This browser doesn't seem to support the `files` property of file inputs.");
+    }
+    else if (!input.files[0]) {
+      alert("Please select a file before clicking 'Load'");
+    }
+    else {
+      file = input.files[0];
+      fr = new FileReader();
+      fr.onload = receivedText;
+      fr.readAsText(file);
+    }
+    
+    function receivedText(e) {
+      let lines = e.target.result;
+      var newArr = JSON.parse(lines);
+      localStorage.setItem("Network", JSON.stringify(newArr));
+      CreateNetwork(newArr);
+    }
   }
 
   render() {
@@ -39,31 +53,18 @@ class SubmissionForm extends React.Component {
       <div className="SubmissionForm">
         <div class="container">
             <div class="row">
-              <form onSubmit={this.handleSubmit}>
-              <h3>Submit Magnet Link</h3>
 
-              <h6>Submit a torrent by providing a magnet link. </h6>
+              
+              <form id="jsonFile" name="jsonFile" enctype="multipart/form-data" method="post">
+              <h3>Create New Network from Json Config</h3>
 
-                <label> Torrent Title </label>
-                  <div>
-                    <input type="text" value={this.state._TorrentTitle} onChange={this.handleTitleChange} />
-                  </div>
-                <p> </p>
+                <h2>Json File</h2>
+                <input type='file' id='fileinput'/>
+                <input type='button'  class="btn btn-outline-light" id='btnLoad' value='Load' onClick={this.loadFile}/>
+                <h6>Create a network by providing a networks generated json file. </h6>
 
-                <label> Magnet Link </label>
-                  <div>
-                    <input type="text" value={this.state._MagnetLink} onChange={this.handleLinkChange} />
-                  </div>
-                <p> </p>
-                
-                <label> Torrent Description </label>
-                  <div>
-                    <textarea rows="4" cols="50" value={this.state._TorrentDescription} onChange={this.handleDescriptionChange} />
-                  </div>
-                <p> </p>
-
-                <input type="submit" class="btn btn-outline-light" value="Submit Link" />
               </form>
+
             </div>
           </div>
         </div>

@@ -16,7 +16,7 @@ class Torrents extends Component {
       }
       Torrents = filter
     }
-
+    /*
     if(Torrents.length > 0) {
       torrentItems = Torrents.map(Torrent => {
             return (
@@ -24,10 +24,10 @@ class Torrents extends Component {
             )
         } );
 
-    } else {
+    } else {*/
 
       torrentItems = <DummyItem />
-    }
+    //}
     return (
       <div className="Torrents">
         <div class="container">

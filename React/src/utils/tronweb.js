@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2'
 
-import {a2hex, hex2a, Time2a, MagnetCheck} from "./parser"
+import {a2hex, hex2a, Time2a, intToUint} from "./parser"
 
 const TronWeb = require('tronweb')
 
@@ -16,39 +16,57 @@ const tronWeb = new TronWeb(
 //address of the contract
 const contractAddress = "TDT3Yggb6KsC4doWqK8jF1SMe2wiFyZmJd";
 
-export async function SubmitMagnetLink(_TorrentTitle, _TorrentDescription, _MagnetLink, TorrentCategory, TorrentSubCategory1, TorrentSubCategory2) {
+export async function CreateNetwork(fr) {
+    
 
-    if (MagnetCheck(_MagnetLink)){
-        //load the contract 
-        const contract = await tronWeb.contract().at(contractAddress);
+    //load the contract 
+    const contract = await tronWeb.contract().at(contractAddress);
 
-        //convert the data to an appropriate format for the blockchain to handle
-        let hexTorrentTitle = a2hex(_TorrentTitle);
-        let hexTorrentDescription = a2hex(_TorrentDescription);
-        let hexMagnetLink = a2hex(_MagnetLink);
+    //construct the bias array
+    let Biases = []
 
-        //notify the user that the post has been submitted
-        Swal({title:'Magnet Link Submitted',
-            type: 'info'
-        });
-        //submit the data to the blockchain
-        contract.SubmitTorrent(hexTorrentTitle, hexTorrentDescription, hexMagnetLink, "0x00", "0x00", "0x00").send({
-            shouldPollResponse:true,
-            callValue:0
-
-        }).then(res => Swal({
-            title:'Magnet Link Submitted Successfully',
-            type: 'success'
-
-        })).catch(err => Swal(
-            {
-                title:'Magnet Link Submission Failed',
-                type: 'error'
-            }
-        ));
-    } else {
-        Swal({title:'Incorrect Magnet Link', type: 'error'});
+    for(var i =0; i<fr['Biases'].length; i++){
+        Biases = Biases.concat(intToUint(fr['Biases'][i]))
     }
+    console.log(Biases)
+
+    //construct the connection arrays
+    let Connections = []
+
+    for(var i =0; i<fr['Connections'].length; i++){
+        Connections = Connections.concat(intToUint(fr['Connections'][i]))
+    }
+    console.log(Connections)
+    
+    //construct the size array
+    let LayerSize = []
+
+    for(var i =0; i<fr['LayerSize'].length; i++){
+        LayerSize = LayerSize.concat(intToUint(fr['LayerSize'][i]))
+    }
+    console.log(LayerSize)
+
+
+    //notify the user that the post has been submitted
+    Swal({title:'Neural Network Submitted for Creation',
+        type: 'info'
+    });
+    //submit the data to the blockchain
+    contract.SetupNetwork(LayerSize, Biases, Connections).send({
+        shouldPollResponse:true,
+        callValue:0
+
+    }).then(res => Swal({
+        title:'Neural Network Creation Successfully',
+        type: 'success'
+
+    })).catch(err => Swal(
+        {
+            title:'Neural Network Creation Failed',
+            type: 'error'
+        }
+    ));
+    
 
 }
 

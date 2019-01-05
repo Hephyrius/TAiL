@@ -24,6 +24,18 @@ export function aTo32bytehex(str, length=32) {
     return "0x" + arr.join('');
 }
 
+//convert ascii text to 32byte
+export function intToUint(str) {
+    var hex = Number(str).toString(16);
+    let hexData = hex
+
+    while(hexData.length < 64){
+        hexData = "0" + hexData
+    }
+
+    return "0x" + hexData;
+}
+
 //convert hex to ascii
 export function hex2a(hexx) {
     var hex = hexx.toString();//force conversion
@@ -38,13 +50,4 @@ export function Time2a(timestamp){
     return s;
 }
 
-
-export function MagnetCheck(str){
-    var valid = true;
-    if (!str.match("magnet:?")){
-        valid = false;
-    }
-    return valid;
-    
-}
 
