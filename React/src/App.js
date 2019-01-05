@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
+import Networks from "./components/Networks";
 import SubmissionForm from "./components/SubmissionForm";
+import PredictionForm from "./components/PredictionForm";
 import About from "./components/About";
 import SiteHeader from "./components/SiteHeader";
 import SiteFooter from "./components/SiteFooter";
-import Search from "./components/Search";
 import "./bootstrap.css";
 import {getNetworks} from "./utils/tronweb";
 
@@ -27,7 +28,9 @@ class App extends Component {
         <div class="container">
           <SiteHeader />
 
-          <Route path="/new-post" component={newpost} />
+          <Route path="/New-Network" component={NewNetwork} />
+
+          <Route path="/Predict" component={Predict} />
 
           <Route path="/" exact component={Home} />
 
@@ -43,10 +46,9 @@ class App extends Component {
   }
 }
 
-const Home = () => ( <Search />);
-const newpost = () => <SubmissionForm /> ;
-//const TorrentP = ({ match }) => ( <TorrentPage TorrentNumber={match.params.id} />);
+const Home = () => ( <Networks />);
+const NewNetwork = () => <SubmissionForm /> ;
+const Predict = () => <PredictionForm /> ;
 const AboutP = ({ match }) => ( <About />);
-const SearchP = ({ match }) => ( <Search />);
 
 export default App;

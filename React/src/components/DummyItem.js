@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 class DummyItem extends Component {
 
   render() {
-      let type = "Torrent";
+      let type = "Networks";
     return (
       <div className="DummyItem">
         <div class="container">
             <div class="row">
-              There are no {type}'s to display.
+              There are no {type}'s to display. Try Refreshing to load more TVM data.
             </div>
           </div>
         </div>
