@@ -14,7 +14,7 @@ const tronWeb = new TronWeb(
 )
 
 //address of the contract
-const contractAddress = "TDT3Yggb6KsC4doWqK8jF1SMe2wiFyZmJd";
+const contractAddress = "TVafe4sdqRZqHr2LH6WsCitaGkC1MhK7WQ";
 
 export async function CreateNetwork(fr) {
     
@@ -72,40 +72,27 @@ export async function CreateNetwork(fr) {
 
 export async function Predict(Network, Values) {
 
+    //load the contract 
+    const contract = await tronWeb.contract().at(contractAddress);
+
     //construct the bias array
     let Inputs = []
 
     for(var i =0; i<Values.length; i++){
         if (Values[i] !== ''){
-            var n = intToUint((Number(Values[i]) * 10000))
+            var n = intToUint((Number(Values[i]) ))
             console.log(n)
             Inputs = Inputs.concat(n)
         }
     }
     console.log(Inputs)
-
-    let Networks = JSON.parse(localStorage.getItem("Networks"))
-    let address = ""
-    for(var i =0; i<Networks.length; i++){
-        if(Networks[i]["NetworkNumber"] == Network){
-            address = Networks[i]["HexNetworkAddress"]
-        }
-    }
-
-    //notify the user that the request has been submitted
+    let NetworkNumber =  "0x" + Number(Network).toString(16);
+    //notify the user that the post has been submitted
     Swal({title:'Prediction Transaction Requested',
-    type: 'info'
+        type: 'info'
     });
-
-    address = address.substring(2, address.length);
-    console.log(address);
-
-    //load the contract 
-    const contract = await tronWeb.contract().at(address);
-
-
     //submit the data to the blockchain
-    contract.Predict(Inputs).send({
+    contract.Predict(NetworkNumber, Inputs).send({
         shouldPollResponse:true,
         callValue:0
 

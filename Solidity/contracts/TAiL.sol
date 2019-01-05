@@ -38,7 +38,6 @@ contract TAiL {
     //make a prediction on user given data 
     function Predict(uint NetworkNumber, uint[] data) public{
         
-        require(NetworkNumber<0, "Network does not exist");
         uint[] memory prediction = TAiLNN(Networks[NetworkNumber]).Predict(data);
         emit Prediction(NetworkNumber, prediction);
         
