@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import Networks from "./components/Networks";
+import Predictions from "./components/Predictions";
 import SubmissionForm from "./components/SubmissionForm";
 import PredictionForm from "./components/PredictionForm";
 import About from "./components/About";
@@ -30,6 +31,8 @@ class App extends Component {
 
           <Route path="/New-Network" component={NewNetwork} />
 
+          <Route path="/Networks" component={NetworksP} />
+
           <Route path="/Predict" component={Predict} />
 
           <Route path="/" exact component={Home} />
@@ -46,7 +49,8 @@ class App extends Component {
   }
 }
 
-const Home = () => ( <Networks />);
+const Home = () => ( <Predictions />);
+const NetworksP = () => ( <Networks />);
 const NewNetwork = () => <SubmissionForm /> ;
 const Predict = () => <PredictionForm /> ;
 const AboutP = ({ match }) => ( <About />);

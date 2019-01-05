@@ -70,6 +70,58 @@ export async function CreateNetwork(fr) {
 
 }
 
+export async function Predict(Network, Values) {
+
+    //construct the bias array
+    let Inputs = []
+
+    for(var i =0; i<Values.length; i++){
+        if (Values[i] !== ''){
+            var n = intToUint((Number(Values[i]) * 10000))
+            console.log(n)
+            Inputs = Inputs.concat(n)
+        }
+    }
+    console.log(Inputs)
+
+    let Networks = JSON.parse(localStorage.getItem("Networks"))
+    let address = ""
+    for(var i =0; i<Networks.length; i++){
+        if(Networks[i]["NetworkNumber"] == Network){
+            address = Networks[i]["HexNetworkAddress"]
+        }
+    }
+
+    //notify the user that the request has been submitted
+    Swal({title:'Prediction Transaction Requested',
+    type: 'info'
+    });
+
+    address = address.substring(2, address.length);
+    console.log(address);
+
+    //load the contract 
+    const contract = await tronWeb.contract().at(address);
+
+
+    //submit the data to the blockchain
+    contract.Predict(Inputs).send({
+        shouldPollResponse:true,
+        callValue:0
+
+    }).then(res => Swal({
+        title:'Prediction Successfull',
+        type: 'success'
+
+    })).catch(err => Swal(
+        {
+            title:'Prediction Failed',
+            type: 'error'
+        }
+    ));
+}
+
+
 //get data from contract events and convert it into a readable/useable state
 export async function getNetworks() {
 
@@ -80,10 +132,12 @@ export async function getNetworks() {
     for(var i=0; i<events.length; i++){
 
         let address = events[i]['result']['owner'];
+        let HexOwnerAddress = events[i]['result']['owner'];
         address = address.substring(2, address.length);
         address = tronWeb.address.fromHex(address)
 
         let NetworkAddress = events[i]['result']['Network'];
+        let  HexNetworkAddress= events[i]['result']['Network'];
         NetworkAddress = NetworkAddress.substring(2, NetworkAddress.length);
         NetworkAddress = tronWeb.address.fromHex(NetworkAddress)
 
@@ -91,7 +145,9 @@ export async function getNetworks() {
         var NetworkData = {
             NetworkNumber: events[i]['result']['NetworkNumber'],
             Network: NetworkAddress,
-            Owner: address
+            HexNetworkAddress: HexNetworkAddress,
+            Owner: address,
+            HexOwnerAddress:HexOwnerAddress
           }
 
           Networks = Networks.concat(NetworkData);

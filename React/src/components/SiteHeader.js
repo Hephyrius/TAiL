@@ -14,8 +14,13 @@ class SiteHeader extends Component {
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link">  <Link to="/new-post">Create New Network</Link> </a>
+                            <a class="nav-link">  <Link to="/New-Network">Create New Network</Link> </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link">  <Link to="/Predict">Make Prediction</Link> </a>
+                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link">  <Link to="/about">About</Link> </a>
                         </li>

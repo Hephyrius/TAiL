@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {} from "../utils/tronweb";
+import {Predict} from "../utils/tronweb";
 
 class PredictionForm extends React.Component {
   constructor(props) {
@@ -40,35 +40,37 @@ class PredictionForm extends React.Component {
     this.setState({Values1: event.target.value});
   }
   handleValuesChange2(event) {
-    this.setState({Values: event.target.value});
+    this.setState({Values2: event.target.value});
   }
   handleValuesChange3(event) {
-    this.setState({Values: event.target.value});
+    this.setState({Values3: event.target.value});
   }
   handleValuesChange4(event) {
-    this.setState({Values: event.target.value});
+    this.setState({Values4: event.target.value});
   }
   handleValuesChange5(event) {
-    this.setState({Values: event.target.value});
+    this.setState({Values5: event.target.value});
   }
   handleValuesChange6(event) {
-    this.setState({Values: event.target.value});
+    this.setState({Values6: event.target.value});
   }
   handleValuesChange7(event) {
-    this.setState({Values: event.target.value});
+    this.setState({Values7: event.target.value});
   }
   handleValuesChange8(event) {
-    this.setState({Values: event.target.value});
+    this.setState({Values8: event.target.value});
   }
   handleValuesChange9(event) {
-    this.setState({Values: event.target.value});
+    this.setState({Values9: event.target.value});
   }
   handleValuesChange10(event) {
-    this.setState({Values: event.target.value});
+    this.setState({Values10: event.target.value});
   }
 
   handleSubmit(event) {
     
+    let values = [this.state.Values1,this.state.Values2,this.state.Values3,this.state.Values4,this.state.Values5,this.state.Values6,this.state.Values7,this.state.Values8,this.state.Values9, this.state.Values10]
+    Predict(this.state.NetworkNumber, values)
     event.preventDefault();
   }
 

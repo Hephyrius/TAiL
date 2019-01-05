@@ -7,7 +7,7 @@ class DummyItem extends Component {
       <div className="DummyItem">
         <div class="container">
             <div class="row">
-              There are no {type}'s to display. Try Refreshing to load more TVM data.
+              There is nothing to display. Try Refreshing to load more TVM data.
             </div>
           </div>
         </div>
