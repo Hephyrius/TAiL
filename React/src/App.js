@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-import TorrentPage from "./components/TorrentPage";
 import SubmissionForm from "./components/SubmissionForm";
 import About from "./components/About";
 import SiteHeader from "./components/SiteHeader";
@@ -34,9 +33,6 @@ class App extends Component {
 
           <Route path="/about" component={AboutP} />
 
-          <Route path="/Torrent=:id" component={TorrentP}/>
-
-
           <SiteFooter />
         </div>
         
@@ -49,7 +45,7 @@ class App extends Component {
 
 const Home = () => ( <Search />);
 const newpost = () => <SubmissionForm /> ;
-const TorrentP = ({ match }) => ( <TorrentPage TorrentNumber={match.params.id} />);
+//const TorrentP = ({ match }) => ( <TorrentPage TorrentNumber={match.params.id} />);
 const AboutP = ({ match }) => ( <About />);
 const SearchP = ({ match }) => ( <Search />);
 

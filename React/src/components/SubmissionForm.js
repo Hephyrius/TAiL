@@ -57,8 +57,6 @@ class SubmissionForm extends React.Component {
               
               <form id="jsonFile" name="jsonFile" enctype="multipart/form-data" method="post">
               <h3>Create New Network from Json Config</h3>
-
-                <h2>Json File</h2>
                 <input type='file' id='fileinput'/>
                 <input type='button'  class="btn btn-outline-light" id='btnLoad' value='Load' onClick={this.loadFile}/>
                 <h6>Create a network by providing a networks generated json file. </h6>
