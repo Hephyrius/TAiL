@@ -25,7 +25,7 @@ function dynamicTronlink(){
 }
 
 //address of the contract
-const contractAddress = "THMQQczhShffpyYGU2AiKJ9LzAE3n3sgtq";
+const contractAddress = "TYmKe1dhZupYYReBGpLdsEV9oqWwX7TFbE";
 //const contractAddress = "TRfMXBToAQAgbnKskpcu25ZkJyDd6cgDRT"; //latest shasta version
 
 export async function CreateNetwork(fr) {
