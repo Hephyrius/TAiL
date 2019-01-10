@@ -9,6 +9,8 @@ contract TAiL {
     //Neural Network Values
     mapping(uint => address) Networks;
     mapping(uint => address) NetworkOwners;
+    mapping(uint => mapping(uint => uint[])) NetworkPredictionHistory;
+    mapping(uint => uint) NetworkTotalPrediction;
     
     constructor () public {
         networkNumber = 0;
@@ -37,13 +39,45 @@ contract TAiL {
     //make a prediction on user given data 
     function Predict(uint NetworkNumber, uint[] data) public {
         
-        emit NetworkPredictionMade(NetworkNumber, TAiLNN(Networks[NetworkNumber]).Predict(data));
+        uint[] memory prediction = TAiLNN(Networks[NetworkNumber]).Predict(data);
+        uint totalPrediction = NetworkTotalPrediction[NetworkNumber];
+
+        //store predictions on chain as opposed to events only - api.trongrid doesnt store history well!
+        NetworkPredictionHistory[NetworkNumber][totalPrediction] = prediction;
+        NetworkTotalPrediction[NetworkNumber] = totalPrediction + 1;
+
+        emit NetworkPredictionMade(NetworkNumber, prediction);
         
     }
     
     //the prediction event tells the user what the network predicts, as well as raw values
     event NetworkPredictionMade(uint network, uint[] RawValues);
 
-    
+    //get the network address
+    function getNetworkAddress(uint NetworkNumber) public view returns (address) {
+        return Networks[NetworkNumber];
+    }
+
+    //get the network Owners address
+    function getNetworkOwners(uint NetworkNumber) public view returns (address) {
+        return NetworkOwners[NetworkNumber];
+    }
+
+    //get the total number of predictions for a network
+    function getTotalNetworkPredictions(uint NetworkNumber) public view returns (uint) {
+        return NetworkTotalPrediction[NetworkNumber];
+    }
+
+    //get the total number of predictions for a network
+    function getHistoricPrediction(uint NetworkNumber, uint PredictionNumber) public view returns (uint[]) {
+        return NetworkPredictionHistory[NetworkNumber][PredictionNumber];
+    }
+
+    //get the total number of deployed networks
+    function getNetworkCount() public view returns (uint) {
+        return networkNumber;
+    }
+
+
 }
 
