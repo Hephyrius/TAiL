@@ -120,6 +120,10 @@ contract TAiLUser {
 }
 ```
 
+### Faq
+
+#### Why are biases initialised but not used
+They will be used in future versions of the library! Due to time constraints bias use/optomisation could not be tested fully
 
 ### Tech Stack and Dependencies
 #### Python
