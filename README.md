@@ -72,6 +72,50 @@ We can then navigate the the networks page on the front end, and view all predic
 #### using a smart contract for predictions
 This step is a little more complex. Any smartcontract inheriting or using TAiL models needs to be importing the TAiLNN contract as well as pointing the contract to one of the addresses emitted during a creation event. Each TAiLNN Contract has its own unique address, which can be found on its frontend network page, or by executing the smart contracts getNetworkAddress function. The Networks address used by your smart contract can either be hard coded, or passed via parametre, this is entirely up to you as a developer.
 
+##### Importing into your smart contract
+if you are going to use the smart contract in a larger system, you must first import the TaiL files. If you do not know the deployed address but know a network number then import TAiL.sol, also import TAiLNN so we can make predictions once an address is known.
+
+```
+
+import "./TAiLNN.sol";
+
+//if address not known
+import "./TAiL.sol";
+
+contract TAiLUser {
+    
+    NetworkNumber = 0;
+    NetworkAddress = 0x0;
+    TAiLAddress = 0x0;
+    
+    constructor (address _networkAddress, uint _networkNumber, address _TAiLAddress) public {
+        
+        //if we know the network deployment address we can use this
+        NetworkAddress = _networkAddress;
+        
+        //else we can initialise the TAiL address and known network number
+        NetworkNumber = _networkNumber;
+        TAiLAddress = _TAiLAddress;
+    }
+    
+    
+    function SomePredictionFunction(uint[] data) public {
+        
+        //if we do not know a network address but know the number we can get the address like so
+        address NetworkAddress = TAiL(TAiLAddress).getNetworkAddress(NetworkNumber);
+        
+        //once we know a network address we can make a prediction like so
+        uint[] memory prediction = TAiLNN(NetworkAddress).Predict(data);
+        
+        //once we have our prediction values, we can do anything with them
+        
+        // SOME FUNCTION THAT WORKS ON THE PREDICTION 
+        
+    }
+}
+```
+
+
 ### Tech Stack and Dependencies
 #### Python
 Python3
