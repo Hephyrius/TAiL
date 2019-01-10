@@ -9,7 +9,7 @@ import About from "./components/About";
 import SiteHeader from "./components/SiteHeader";
 import SiteFooter from "./components/SiteFooter";
 import "./bootstrap.css";
-import {getNetworks, getPredictions} from "./utils/tronweb";
+import {getNetworks, getPredictions, getNetworkData} from "./utils/tronweb";
 
 class App extends Component {
   
@@ -17,9 +17,10 @@ class App extends Component {
     super();
     this.state = [{
       posts : [],
-      Networks : getNetworks(), 
+      Networks : getNetworkData(), 
       Predictions:getPredictions()
     }]
+    //getNetworkData();
     
     
 

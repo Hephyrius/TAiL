@@ -158,6 +158,43 @@ export async function getNetworks() {
 }
 
 //get data from contract events and convert it into a readable/useable state
+export async function getNetworksStored() {
+    tronWeb = dynamicTronlink()
+    //load the contract 
+    const events = await tronWeb.getEventResult(contractAddress, 0, "NetworkCreated", 0,  200, 1);
+
+    var Networks = []
+    for(var i=0; i<events.length; i++){
+
+        let address = events[i]['result']['owner'];
+        let HexOwnerAddress = events[i]['result']['owner'];
+        address = address.substring(2, address.length);
+        address = tronWeb.address.fromHex(address)
+
+        let NetworkAddress = events[i]['result']['Network'];
+        let  HexNetworkAddress= events[i]['result']['Network'];
+        NetworkAddress = NetworkAddress.substring(2, NetworkAddress.length);
+        NetworkAddress = "41" + NetworkAddress;
+        NetworkAddress = tronWeb.address.fromHex(NetworkAddress)
+
+        //format data so it can be used and stored better
+        var NetworkData = {
+            NetworkNumber: events[i]['result']['NetworkNumber'],
+            Network: NetworkAddress,
+            HexNetworkAddress: HexNetworkAddress,
+            Owner: address,
+            HexOwnerAddress:HexOwnerAddress
+          }
+
+          Networks = Networks.concat(NetworkData);
+    }
+
+    localStorage.setItem("Networks", JSON.stringify(Networks));
+
+    return Networks;
+}
+
+//get data from contract events and convert it into a readable/useable state
 export async function getPredictions() {
     tronWeb = dynamicTronlink()
 
@@ -180,4 +217,71 @@ export async function getPredictions() {
     localStorage.setItem("Predictions", JSON.stringify(Predictions));
 
     return Predictions;
+}
+
+//get the vote counters from the blockchain
+export async function getNetworkData() {
+
+    tronWeb = dynamicTronlink()
+
+    var Networks = []
+    var PredictionData = []
+
+    const contract = await tronWeb.contract().at(contractAddress);
+
+    let NumberNetworks = await contract.getNetworkCount().call();
+    let TotalNetworks = tronWeb.toBigNumber(NumberNetworks['_hex']).toNumber();
+
+    for(var i=0; i<TotalNetworks; i++){
+        let id = "0x" + Number(i).toString(16);
+        let NetworkAddress= await contract.getNetworkAddress(id).call();
+        let TronAddress = tronWeb.address.fromHex(NetworkAddress);
+
+        let OwnerNetworkAddress= await contract.getNetworkOwners(id).call();
+        let OwnerTronAddress = tronWeb.address.fromHex(OwnerNetworkAddress);
+
+        let NumberPredictions = await contract.getTotalNetworkPredictions(id).call();
+        let TotalNetworkPredictions = tronWeb.toBigNumber(NumberPredictions['_hex']).toNumber();
+
+        for(var j=0; j<TotalNetworkPredictions; j++){
+            let pid = "0x" + Number(j).toString(16);
+
+            let Predictions = await contract.getHistoricPrediction(id, pid).call();
+            let Pred = []
+            let Predicted = 0
+            let PredictedClass = 0
+            for(var k = 0; k< Predictions.length; k++){
+                let Value = tronWeb.toBigNumber(Predictions[k]).toNumber();
+                Pred = Pred.concat(Value)
+                if(Value > Predicted){
+                    Predicted = Value
+                    PredictedClass = k
+                }
+            }
+            var Prediction = {
+                NetworkNumber: i,
+                PredictionNumber: j,
+                RawPrediction: Pred,
+                PredictedClass: PredictedClass
+            }
+            PredictionData = PredictionData.concat(Prediction);
+        }
+
+        //format data so it can be used and stored better
+        var NetworkData = {
+            NetworkNumber: i,
+            Network: TronAddress,
+            HexNetworkAddress: NetworkAddress,
+            Owner: OwnerTronAddress,
+            HexOwnerAddress:OwnerNetworkAddress,
+            TotalPredictions: TotalNetworkPredictions
+            }
+
+            Networks = Networks.concat(NetworkData);
+    } 
+
+    localStorage.setItem("Networks", JSON.stringify(Networks));
+    localStorage.setItem("Predictions", JSON.stringify(PredictionData));
+
+    return Networks;
 }
