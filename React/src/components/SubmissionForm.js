@@ -5,9 +5,6 @@ class SubmissionForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      _TorrentTitle: '',
-      _MagnetLink: '',
-      _TorrentDescription: ''
     };
 
     this.loadFile = this.loadFile.bind(this);
