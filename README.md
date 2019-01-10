@@ -1,7 +1,12 @@
 # TAiL (Tron AI Library)
 
-#### OLD VERSIONS Deployed at TNSNE8FrYhXionoZDNjYTtUWtzc6zt2VSX & TBf9RVryATzFR5FsQv6Rg8JyAiEiGaiHPD
-#### The Latest Version is not yet deployed. It can be found in the Solidity/Contracts folder
+#### Mainnet VERSIONS Deployed at TNSNE8FrYhXionoZDNjYTtUWtzc6zt2VSX & TBf9RVryATzFR5FsQv6Rg8JyAiEiGaiHPD
+#### The Latest Version is not yet deployed on the main net. It can be found in the Solidity/Contracts folder
+#### Latest Shasta Deployment - TRfMXBToAQAgbnKskpcu25ZkJyDd6cgDRT
+
+#### Post Tron Accelerator Note
+
+##### On the 10th of January I updated the smart contracts and front end. The Front End should now be able to show predictions of deployed models without issue. However this new functionality is not deployed on the main net, and will only work on the test net with the shasta contract found at TRfMXBToAQAgbnKskpcu25ZkJyDd6cgDRT
 
 ## What is TAiL
 TAiL Is an AI Library and Deployer. The Library is used to train a neural network using python and user defined data. The Deployer is the front end of the dApp responsible for creating the network on the TVM and interacting with it. Iteraction being prediction on new data. The Frontend also allows Historic predictions to be reviewed. The models created with TAiL can be incorporated within other smart contract systems by referencing TAiL as an import, and interacting with the Predict function of the smart contract.
@@ -10,9 +15,7 @@ TAiL Is an AI Library and Deployer. The Library is used to train a neural networ
 
 TAiL allows a fairly easy way of creating and deploying machine learning models to the TVM. This is something that is normally fairly complex. Machine learning on smart contract platforms is something thats rare, and many few have attempted it thusfar. The Library simplifies the process by allowing you to train a model using python, export it as a json file and them deploy it via a reactjs front end.
 
-## Post Accelerator Note
 
-On the 10th of January I updated the smart contracts and front end. The Front End should now be able to show predictions of deployed models without issue.
 
 ## How to use it
 
