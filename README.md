@@ -1,12 +1,18 @@
 # TAiL (Tron AI Library)
 
+#### OLD VERSIONS Deployed at TNSNE8FrYhXionoZDNjYTtUWtzc6zt2VSX & TBf9RVryATzFR5FsQv6Rg8JyAiEiGaiHPD
+#### The Latest Version is not yet deployed. It can be found in the Solidity/Contracts folder
+
 ## What is TAiL
 TAiL Is an AI Library and Deployer. The Library is used to train a neural network using python and user defined data. The Deployer is the front end of the dApp responsible for creating the network on the TVM and interacting with it. Iteraction being prediction on new data. The Frontend also allows Historic predictions to be reviewed. The models created with TAiL can be incorporated within other smart contract systems by referencing TAiL as an import, and interacting with the Predict function of the smart contract.
 
-
 ## Why is it needed
 
-TAiL allows a fairly easy way of creating and deploying machine learning models to the TVM. This is something that is normally fairly complex. The Library simplifies the process by allowing you to train a model using python, export it as a json file and them deploy it via a reactjs front end.
+TAiL allows a fairly easy way of creating and deploying machine learning models to the TVM. This is something that is normally fairly complex. Machine learning on smart contract platforms is something thats rare, and many few have attempted it thusfar. The Library simplifies the process by allowing you to train a model using python, export it as a json file and them deploy it via a reactjs front end.
+
+## Post Accelerator Note
+
+On the 10th of January I updated the smart contracts and front end. The Front End should now be able to show predictions of deployed models without issue.
 
 ## How to use it
 
@@ -21,7 +27,7 @@ import pandas as pd
 import numpy as np
 ```
 
-we then need to import our data and make it useable, this is a standard data science pipeline example:
+we then need to import our data and make it useable, this is a standard data science pipeline example using the Iris dataset which can be found at https://gist.github.com/curran/a08a1080b88344b0c8a7 :
 ``` python
 #import test data
 data = pd.read_csv("TestData/iris.csv")
@@ -31,9 +37,6 @@ y = data['label']
 x = data.drop(['label'], axis=1)
 
 x = np.asarray(x)
-
-#shift our values up by 1e8 so we dont have any decimal values
-x = x
 
 #convert string labels to integers
 y = y.astype('category')
@@ -50,36 +53,46 @@ Genetic = GN(10, [4,2,3]) # where 10 is number of candidates per generation and 
 Genetic.Fit(x, y, 10) # where x is variables, y is labels and 10 is number of epochs/generations
 
 ```
+##### Note: The optomiser used by TAiL Is a genetic algorithm. It is not the most efficient method of finding of optomisation but it does get the job done, especially as TAiL is very early stage. Also note that the function being optomised is accuracy. Other loss functions such as Mean Square Error or Log Loss may be added in future.
 
 ### Step 2 Deploy the model to TVM
 
-This step is a simple step. On our TVM front end we need to navigate to the "Create New Network" section. This page allows us to navigate to the .json file we created in step 1. Once we have selected a file and clicked submit, a transaction will be created that will deploy a neural network to the tron virtual machine.
+This step is a simple step. On our TVM front end we need to navigate to the "Create New Network" section. This page allows us to navigate to the .json file we created in step 1. Once we have selected a file and clicked submit, a transaction will be created that will deploy a neural network with our values and sizes to the tron virtual machine.
 
 ### step 3 Making a prediction
 
-Note events for the front end for this are not functioning fully at the moment, but the contracts do predict as expected - in Remix and Tronstudio.
-
 #### using the front end for prediction making
-This step is also simple step. On our TVM front end we need to navigate to the "Make" section. This page allows set a network number, which is the unique deployed number stored on the TAiL contract. As well as input values, For each input (up to 10 inputs) a value can be added or left blank. Each value corrosponds to an input neuron so order of input should be the same as the order in which the data was trained with. 
+This step is also simple. On our front end we need to navigate to the "Make Prediction" section. This page allows us to set a network number, which is the unique deployed number stored on the TAiL contract. As well as input values, For each input (up to 10 inputs) a value can be added or left blank. Each value corrosponds to an input neuron so order of input should be the same as the order in which the data was trained with. 
+
+We can then navigate the the networks page on the front end, and view all prediction outputs made by the network. This will show us the raw output value, as well as the predicted class. The predicted class being the output node with the largest value.
 
 #### using a smart contract for predictions
-This step is a little more complex. Any smartcontract inheriting or using TAiL models needs to be importing the TAiLNN contract as well as pointing the contract to one of the addresses emitted during a creation event. This needs to be done either as a smart contract hard coded value or as a parameter. whichever is your need
-
-Deployed at TNSNE8FrYhXionoZDNjYTtUWtzc6zt2VSX & TBf9RVryATzFR5FsQv6Rg8JyAiEiGaiHPD
+This step is a little more complex. Any smartcontract inheriting or using TAiL models needs to be importing the TAiLNN contract as well as pointing the contract to one of the addresses emitted during a creation event. Each TAiLNN Contract has its own unique address, which can be found on its frontend network page, or by executing the smart contracts getNetworkAddress function. The Networks address used by your smart contract can either be hard coded, or passed via parametre, this is entirely up to you as a developer.
 
 ### Tech Stack and Dependencies
-
+#### Python
 Python3
+
 Numpy
+
 Pandas
+
 Math
+
 Random
 
+#### JavaScript
+
 NodeJS
+
 TronWeb
+
 TronBox
+
 ReactJS
+
 Bootstrap
+
 yarn
 
 
