@@ -137,6 +137,7 @@ export async function getNetworks() {
         let NetworkAddress = events[i]['result']['Network'];
         let  HexNetworkAddress= events[i]['result']['Network'];
         NetworkAddress = NetworkAddress.substring(2, NetworkAddress.length);
+        NetworkAddress = "41" + NetworkAddress;
         NetworkAddress = tronWeb.address.fromHex(NetworkAddress)
 
         //format data so it can be used and stored better
