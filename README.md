@@ -74,6 +74,8 @@ This step is a little more complex. Any smartcontract inheriting or using TAiL m
 
 if you are going to use the smart contract in a larger system, you must first import the TaiL files. If you do not know the deployed address but know a network number then import TAiL.sol, also import TAiLNN so we can make predictions once an address is known.
 
+
+#### Smart Contract Example Useage
 ```
 
 import "./TAiLNN.sol";
