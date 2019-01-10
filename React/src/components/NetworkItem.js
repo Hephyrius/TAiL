@@ -13,7 +13,7 @@ class NetworkItem extends Component {
               
               <div class="col-md-10">
                 <div className="title-area">
-                    <span className="title"> Network Number : {this.props.Network.NetworkNumber}</span>
+                    <span className="title"> <Link to={"NetworkNumber=" + this.props.Network.NetworkNumber}> Network Number : {this.props.Network.NetworkNumber}</Link></span>
                 </div>
 
                 <div className="meta-area">

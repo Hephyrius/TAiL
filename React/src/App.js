@@ -7,6 +7,7 @@ import SubmissionForm from "./components/SubmissionForm";
 import PredictionForm from "./components/PredictionForm";
 import About from "./components/About";
 import SiteHeader from "./components/SiteHeader";
+import NetworkPage from "./components/NetworkPage";
 import SiteFooter from "./components/SiteFooter";
 import "./bootstrap.css";
 import {getNetworks, getPredictions, getNetworkData} from "./utils/tronweb";
@@ -40,6 +41,8 @@ class App extends Component {
 
           <Route path="/Predict" component={Predict} />
 
+          <Route path="/NetworkNumber=:id" component={NetworkP}/>
+
           <Route path="/" exact component={Home} />
 
           <Route path="/about" component={AboutP} />
@@ -55,6 +58,7 @@ class App extends Component {
 }
 
 const PredictionsP = () => ( <Predictions />);
+const NetworkP = ({ match }) => ( <NetworkPage NetworkNumber={match.params.id} />);
 const Home = () => ( <Networks />);
 const NewNetwork = () => <SubmissionForm /> ;
 const Predict = () => <PredictionForm /> ;

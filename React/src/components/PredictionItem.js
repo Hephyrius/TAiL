@@ -3,6 +3,11 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class PredictionItem extends Component {
   render() {
+    var RawPrediction = "[";
+    for(var i=0; i<this.props.Prediction.RawPrediction.length; i++){
+      RawPrediction += this.props.Prediction.RawPrediction[i].toString() +","
+    }
+    RawPrediction += "]"
 
     return (
       <div className="PredictionItem">
@@ -12,17 +17,14 @@ class PredictionItem extends Component {
           <div class="row">
               
               <div class="col-md-10">
-                <div className="title-area">
-                    <span className="title"> Network Number : {this.props.Prediction.NetworkNumber}</span>
-                    <span className="Values"> Values: {this.props.Prediction.Value}</span>
-                </div>
+                    <span className="title"> Prediction Number : {this.props.Prediction.PredictionNumber}</span>
+                    <p></p>
+                    <span className="Values"> Raw Prediction Values: {RawPrediction}</span>
+                    <p></p>
+                    <span className="Class"> Predicted Class:  {this.props.Prediction.PredictedClass}</span>
 
-                <div className="meta-area">
-                   <strong> Submitted by {this.props.Prediction.Owner}</strong>
-                   <strong> Deployed at {this.props.Prediction.Network}</strong>
-                </div>
-                
               </div>
+                
           </div>
         </div>
         
