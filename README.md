@@ -1,6 +1,8 @@
 # TAiL (Tron AI Library)
 
-## Latest Deployment Address: THMQQczhShffpyYGU2AiKJ9LzAE3n3sgtq
+## Latest Deployment Address: TYmKe1dhZupYYReBGpLdsEV9oqWwX7TFbE
+#### Alternative mainnet address THMQQczhShffpyYGU2AiKJ9LzAE3n3sgtq (30% Consumer Resources)
+
 ### Latest Shasta Deployment - TRfMXBToAQAgbnKskpcu25ZkJyDd6cgDRT
 #### Previous Mainnet VERSIONS Deployed at TNSNE8FrYhXionoZDNjYTtUWtzc6zt2VSX & TBf9RVryATzFR5FsQv6Rg8JyAiEiGaiHPD
 
