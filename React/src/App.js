@@ -17,9 +17,6 @@ class App extends Component {
   constructor () {
     super();
     this.state = [{
-      posts : [],
-      Networks : getNetworkData(), 
-      Predictions:getPredictions()
     }]
     //getNetworkData();
     

@@ -8,9 +8,9 @@ var tronWeb;
 
 //connecting tronweb to the local docker node
 const tronWebDefault = new TronWeb(
-    "https://api.shasta.trongrid.io",
-    "https://api.shasta.trongrid.io",
-    "https://api.shasta.trongrid.io",
+    "https://api.trongrid.io",
+    "https://api.trongrid.io",
+    "https://api.trongrid.io",
     'da146374a75310b9666e834ee4ad0866d6f4035967bfc76217c5a495fff9f0d0', //default testnet pkey
 )
 
@@ -25,8 +25,8 @@ function dynamicTronlink(){
 }
 
 //address of the contract
-//const contractAddress = "TBf9RVryATzFR5FsQv6Rg8JyAiEiGaiHPD"; // old mainnet version
-const contractAddress = "TRfMXBToAQAgbnKskpcu25ZkJyDd6cgDRT";
+const contractAddress = "THMQQczhShffpyYGU2AiKJ9LzAE3n3sgtq";
+//const contractAddress = "TRfMXBToAQAgbnKskpcu25ZkJyDd6cgDRT"; //latest shasta version
 
 export async function CreateNetwork(fr) {
     
