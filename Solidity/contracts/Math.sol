@@ -13,6 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+//Library original repository:
+//https://github.com/dapphub/ds-math/blob/master/src/math.sol
+//THIS LIBRARY HAS BEEN MODIFIED FOR TAiL
+
+//TAiL is a dApp and Library created for the Tron Accelerator
+//The Python library enables training of Neural Network Classifiers
+//As well as the export of trained models in JSON Form
+//The smart contract allows pretrained models to be used on the TVM
+//By allowing users to initialise them via a smart contract deployer system
+//The ReactJs front end allows the deployment, initialisation and use of the Neural Networks
+//It also allows the exploration of the Neural Networks by allowing users to see Past Predictions
+//As Well as Owners and Deployed Addresses.
+//Created By Harnick Khera (Github.com/Hephyrius)
+//Repository can be found at (Github.com/Hephyrius/TAiL)
+
 pragma solidity >=0.4.23;
 
 library Math {

@@ -2,7 +2,18 @@
 """
 Created on Wed Jan  2 23:25:48 2019
 
-@author: Khera
+@author: Harnick Khera (Hephyrius)
+
+TAiL is a dApp and Library created for the Tron Accelerator
+The Python library enables training of Neural Network Classifiers
+As well as the export of trained models in JSON Form
+The smart contract allows pretrained models to be used on the TVM
+By allowing users to initialise them via a smart contract deployer system
+The ReactJs front end allows the deployment, initialisation and use of the Neural Networks
+It also allows the exploration of the Neural Networks by allowing users to see Past Predictions
+As Well as Owners and Deployed Addresses.
+Created By Harnick Khera (Github.com/Hephyrius)
+Repository can be found at (Github.com/Hephyrius/TAiL)
 """
 
 from FeedForwardNeuralNetwork import FeedForwardNeuralNetwork as FFN
