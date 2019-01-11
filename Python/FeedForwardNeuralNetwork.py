@@ -25,14 +25,18 @@ Repository can be found at (Github.com/Hephyrius/TAiL)
 import random as r
 import numpy as np
 import json
+import math
 
 class FeedForwardNeuralNetwork():
     
     LayerSizes = []
     NeuronBiases = []
     NeuronConnectonsWeights = []
+    NeuronErrors = []
     TotalNeurons = 0
     NetworkFitness = 0
+    TotalError = 0
+    LearningRate = 0.01
     
     #initialise the network
     def __init__ (self, _LayerSizes):
@@ -47,7 +51,8 @@ class FeedForwardNeuralNetwork():
         self.TotalNeurons = 0
         self.NetworkFitness = 0
         self.TotalConnections = 0
-        
+        self.TotalError = 0
+        self.LearningRate = 0.01
         #print("Setting Up Networks")
         self.CreateNetwork(_LayerSizes)
         self.RandomiseNetwork()
@@ -167,6 +172,82 @@ class FeedForwardNeuralNetwork():
         
         return Prediction
     
+    #set make a prediction given data
+    def ForwardPropergation(self, x, y):  
+        
+        self.TotalError = 0
+        ErrorOuts = []
+        
+        for i in range(self.LayerSizes[self.TotalLayers - 1]):
+            ErrorOuts.append(0)
+            
+        for i in range(len(y)):
+            #print(i)
+            prediction = self.Predict(x[i])
+            
+            predicted = np.argmax(prediction)
+            
+            for j in range(self.LayerSizes[self.TotalLayers - 1]):
+                
+                if j == predicted:
+                    ErrorOuts[j] += (1 - prediction[j])
+                else:
+                    ErrorOuts[j] += (0 - prediction[j]) 
+                    
+                #print(ErrorOuts[j])
+                
+        for i in range(self.LayerSizes[self.TotalLayers - 1]):
+            #ErrorOuts[i] = ErrorOuts[i] #S / len(x)
+            #ErrorOuts[i] = ErrorOuts[i] * ErrorOuts[i]
+            self.TotalError += ErrorOuts[i]
+        
+        self.TotalError = self.TotalError / len(x)
+        print(self.TotalError)
+        
+    #fitting the model using a home brewed gradient descent
+    def BackPropergation(self):
+        
+        #randomise biases
+        for i in range(len(self.NeuronBiases)):
+            self.NeuronBiases[i] = self.NeuronBiases[i] * self.TotalError * self.LearningRate
+            #print(Network.NeuronBiases[i])
+        
+        #randomise the connection weights
+        for i in range(len(self.NeuronConnectonsWeights)):
+            self.NeuronConnectonsWeights[i][2] = self.NeuronConnectonsWeights[i][2] * self.TotalError * self.LearningRate
+    
+    def Fit(self, x, y, epochs):
+        
+        for j in range(epochs):
+            
+            print("=====================================")
+            print("Epoch " + str(j) + " / " + str(epochs))
+            
+            #print(i)
+            self.ForwardPropergation(x, y)
+            self.BackPropergation()
+            
+            if j % 20 == 0 and j != 0:
+                print(self.TotalError)
+            self.AssessNetworkAccuracy(x, y)
+            
+    def AssessNetworkAccuracy(self, x, y):
+        
+        TotalValues = len(y)
+        Accuracy = 0
+        
+        for i in range(len(y)):
+            #print(i)
+            prediction = self.Predict(x[i])
+            
+            if np.argmax(prediction) == y[i]:
+                #print(np.argmax(prediction))
+                Accuracy += 1
+        
+        Fitness = Accuracy/TotalValues
+        self.Fitness = Fitness
+        print("Network Accuract: " + str(self.Fitness))
+        
     def sigmoid(self, x):
         return 1 / (1 + np.exp(-x))  
     
@@ -185,17 +266,7 @@ class FeedForwardNeuralNetwork():
         for i in range(len(self.NeuronConnectonsWeights)):
             self.NeuronConnectonsWeights[i][2] = r.random()
 
-
-    #fitting the model using stochastic gradient descent
-    def BackPropergation(self):
-        print("Epoch")
-        
-        #calculate the error for a given example
-        prediction = self.Predict(x);
-        predictionError = y-np.argmax(prediction)
-        
-            
-    def ConvertToTron(self):
+    def ConvertToTron(self, OutputFileName="NeuralNetworkConfiguration"):
         
         bias = []
         
@@ -219,7 +290,7 @@ class FeedForwardNeuralNetwork():
         
         print("Saving Configuration as NeuralNetworkConfiguration.Json")
         
-        with open('NeuralNetworkConfiguration.json', 'w') as fp:
+        with open( OutputFileName + '.json', 'w') as fp:
             json.dump(data, fp)
 
         
