@@ -219,7 +219,7 @@ class FeedForwardNeuralNetwork():
         
         print("Saving Configuration as NeuralNetworkConfiguration.Json")
         
-        with open('NeuralNetworkConfigurationTest.json', 'w') as fp:
+        with open('NeuralNetworkConfiguration.json', 'w') as fp:
             json.dump(data, fp)
 
         
