@@ -103,7 +103,7 @@ export async function Predict(Network, Values) {
 
     for(var i =0; i<Values.length; i++){
         if (Values[i] !== ''){
-            var n = intToUint((Number(Values[i]) * 100000))
+            var n = intToUint((Number(Values[i]) * 1000000))
             console.log(n)
             Inputs = Inputs.concat(n)
         }
