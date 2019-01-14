@@ -4,7 +4,7 @@
 ## Latest Deployment Address: TYmKe1dhZupYYReBGpLdsEV9oqWwX7TFbE
 #### Alternative mainnet address THMQQczhShffpyYGU2AiKJ9LzAE3n3sgtq (30% Consumer Resources)
 
-## Front End : http://playerloot.com:8080/ 
+## Front End : http://playerloot.com/ 
 #### (domain name is temporary until a better name can be found)
 
 ### Latest Shasta Deployment - TRfMXBToAQAgbnKskpcu25ZkJyDd6cgDRT
