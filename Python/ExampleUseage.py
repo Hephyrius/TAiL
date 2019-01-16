@@ -21,24 +21,28 @@ from GeneticOptomiser import GeneticOptomiser as GN
 import pandas as pd
 import numpy as np
 
-#import test data
-data = pd.read_csv("TestData/iris.csv")
-
-#split into features and labels
-y = data['label']
-x = data.drop(['label'], axis=1)
-
-x = np.asarray(x)
-
-#shift our values up by 1e8 so we dont have any decimal values
-x = x
+#data = pd.read_csv("TestData/iris.csv")
+#y = data['label']
+#x = data.drop(['label'], axis=1)
+#x = np.asarray(x)
 
 #convert string labels to integers
-y = y.astype('category')
-y = y.cat.codes
+#y = y.astype('category')
+#y = y.cat.codes
+
+x = np.array([[0,0,1],
+              [0,1,1],
+              [1,0,1],
+              [1,1,1],
+              [0,0,0],
+              [0,1,0],
+              [1,0,0],
+              [1,1,0]])
+
+y = np.array([[1],[0],[0],[1],[0],[1],[1],[1]])
 
 #prepare the network
 #first input is the number of candidates in our optomiser
 #second is the layer sizes for the neural network
-Genetic = GN(10, [4,2,3])
-Genetic.Fit(x, y, 10)
+Genetic = GN(40, [3,2])
+Genetic.Fit(x, y, 50)
