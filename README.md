@@ -1,5 +1,5 @@
 # TAiL (Tron AI Library)
-
+Repo Status: At the moment TAiL is shelved while I work on other projects. I'm looking to integrate TAiL as part of NoFilter :) Stay Tuned! 
 
 ## Latest Deployment Address: TYmKe1dhZupYYReBGpLdsEV9oqWwX7TFbE
 #### Alternative mainnet address THMQQczhShffpyYGU2AiKJ9LzAE3n3sgtq (30% Consumer Resources)
